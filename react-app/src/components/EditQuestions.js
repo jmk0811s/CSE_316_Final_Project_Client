@@ -12,12 +12,14 @@ function EditQuestions(props){
                 <button>+</button>
             </div>
             {questions? questions.map((question)=>
-                (<li style={{listStyle: "none",padding: "5px"}}>
-                    {(<Question qText = {question.qText}
-                                qType = {question.qType}
-                                qDate = {question.qDate}
-                    />)}
-                </li>)
+                <li style={{listStyle: "none",padding: "5px"}}>
+                    <Question qText = {question.qText}
+                              qType = {question.qType}
+                              qDate = {question.qDate}
+                              qChoices = {question.qChoices}
+                              editMode = {true}
+                    />
+                </li>
             ):<></>}
             <button>Save</button>
         </div>

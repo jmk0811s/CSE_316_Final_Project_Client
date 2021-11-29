@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Question from "./Question";
 function EditQuestions(props){
 
-
+    //questions를 받아올지 log days를 받아올지?
     const [questions, setQuestions] = useState(props.questions)
 
     return (

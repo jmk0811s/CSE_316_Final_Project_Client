@@ -12,9 +12,12 @@ function LogDay(props){
 
     return (
         <div>
-            <div style={{display: "flex", justifyContent: "space-between"}}>
+            <div className="LogSelectionBar" style={{display: "flex", justifyContent: "space-between"}}>
                 <button>{"<"}</button>
-                {selectedDate.getMonth() + '/' + selectedDate.getDay() + '/' + selectedDate.getFullYear()}
+                <h2>
+                    {selectedDate.getMonth() + '/' + selectedDate.getDay() + '/' + selectedDate.getFullYear()}
+                </h2>
+
                 <button>{">"}</button>
             </div>
             <div>
@@ -29,8 +32,10 @@ function LogDay(props){
                     </li>
                 )):<></>}
             </div>
+            <div className="SubmitButton" >
+                <button>Submit</button>
+            </div>
 
-            <button>Submit</button>
 
         </div>
     );

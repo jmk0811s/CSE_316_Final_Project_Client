@@ -1,9 +1,12 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Profile from "./Profile";
 import EditQuestions from "./EditQuestions";
 import LogDay from "./LogDay";
+import ViewData from "./ViewData";
 
 function Main(){
+
+    const [currentPage, setCurrentPage] = useState('LogDay');
 
     const testQSet = [
         {qText: "2019 q1: bool", qType: "boolean", qDate: new Date('2019-06-28')},
@@ -33,6 +36,49 @@ function Main(){
         },
     ]
 
+    // const findQuestionByDate = (qDate) =>{
+    //     testLogDaySet.map((q)=> {
+    //         if(q.qDate == qDate){
+    //
+    //         }
+    //     })
+    // }
+
+    const editQuestion = (qDate,prop, newValue) => {
+
+        testLogDaySet.map((q)=> {
+            if(q.qDate == qDate){
+
+                if(prop == 'qText'){
+
+                }
+                else if(prop == 'qType'){
+
+                }
+                else{
+
+                }
+            }
+        })
+    }
+
+    let handleChange = (prop) => (event) => {
+        if (prop === "LogDay"){
+            setCurrentPage(prop);
+        }
+        else if (prop === "EditQ"){
+            setCurrentPage(prop);
+        }
+        else if (prop === "ViewData"){
+            setCurrentPage(prop);
+        }
+        else{
+            setCurrentPage(prop);
+        }
+
+    }
+
+
     return (
         <div className="Main">
             <div className= "MenuBar" >
@@ -40,16 +86,24 @@ function Main(){
                 <h2 className="Header">Day Logger</h2>
 
                 <div className= "Menus" style={{display: 'flex'}}>
-                    <button>Log Day</button>
-                    <button>Edit Questions</button>
-                    <button>View Data</button>
+                    <button onClick={handleChange('LogDay')}>Log Day</button>
+                    <button onClick={handleChange('EditQ')}>Edit Questions</button>
+                    <button onClick={handleChange('ViewData')}>View Data</button>
                 </div>
 
-                <button>profile img</button>
+                <button onClick={handleChange('Profile')}>profile img</button>
             </div>
-            {/*<Profile></Profile>*/}
-            {/*<EditQuestions questions = {testQSet}></EditQuestions>*/}
-            {/*<LogDay logDays={testLogDaySet}></LogDay>*/}
+            {currentPage == 'LogDay'?
+                <LogDay logDays={testLogDaySet}></LogDay>:
+                currentPage == 'EditQ'?
+                    <EditQuestions questions = {testQSet}></EditQuestions>:
+                    currentPage == 'Profile'?
+                        <Profile></Profile>:
+                        <ViewData></ViewData>
+            }
+
+
+
 
         </div>
 

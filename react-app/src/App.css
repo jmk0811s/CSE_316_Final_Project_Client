@@ -56,15 +56,61 @@ button:hover {
 
 .Question{
   background-color: var(--standardBackgroundColor);
-  padding: 5px;
+  padding: 10px;
+  border-radius: 10px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Question input, select{
+  border-radius: 5px;
+  margin-top: 10px;
 }
 
 .EditQ{
   padding: 10px;
 }
 
+.LogSelectionBar button{
+  background: transparent;
+  border: none;
+}
+
+.LogSelectionBar {
+  padding: 10px;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.SubmitButton{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.SubmitButton button{
+  background-color: var(--actionBackgroundColor);
+  border-radius: 10px;
+  width: 80px;
+  height: 50px;
+  border: none;
+  color: #eaf6f6;
+}
+
+
 @media all and (max-width: 600px) {
   .Header{
     display: none;
+  }
+  .LogSelectionBar {
+    padding: 10px;
+    width: 100%;
+
+  }
+  .SubmitButton{
+    width: 100%;
+  }
+  .Question{
+    width: 100%;
   }
 }

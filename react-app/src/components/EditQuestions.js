@@ -9,10 +9,12 @@ function EditQuestions(props){
         <div className="EditQ">
             <div style={{display: "flex", justifyContent: "space-between"}}>
                 <h3>Edit Questions</h3>
-                <button>+</button>
+                <button style={{background: "transparent", border: "none"}}>
+                    <span  className="material-icons">add_circle</span>
+                </button>
             </div>
             {questions? questions.map((question)=>
-                <li style={{listStyle: "none",padding: "5px"}}>
+                <li className="QuestionList" style={{listStyle: "none",padding: "5px"}}>
                     <Question qText = {question.qText}
                               qType = {question.qType}
                               qDate = {question.qDate}
@@ -21,7 +23,9 @@ function EditQuestions(props){
                     />
                 </li>
             ):<></>}
-            <button>Save</button>
+            <div className="SubmitButton">
+                <button>Save</button>
+            </div>
         </div>
     );
 }

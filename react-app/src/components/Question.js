@@ -18,6 +18,8 @@ function Question(props){
 
     }
 
+    console.log(questionType);
+
     return(editMode?
             (<div className="Question">
                 <form>
@@ -27,23 +29,26 @@ function Question(props){
                 </form>
                 <div style={{display: "flex",justifyContent: "space-between"}}>
                     <select onChange={handleSelect("qType")} value={questionType}>
-                        <option value="1">number</option>
-                        <option value="2">boolean</option>
-                        <option value="3">text</option>
-                        <option value="4">multiple choice</option>
+                        <option value="number">number</option>
+                        <option value="boolean">boolean</option>
+                        <option value="text">text</option>
+                        <option value="multiple">multiple choice</option>
                         {/* select 함에 따라 question 의 state 이 바뀌도록*/}
                     </select>
 
                     {/*if option 4 -> multiple choice 쓸 수 있는 input fields들 */}
 
-                    <button>trash</button>
+                    <button style={{background:"transparent", border: "none"}}>
+                        <span className="material-icons">delete_outline</span>
+                    </button>
                 </div>
             </div>):
             (<div className="Question">
                 {questionText}
+                <div></div>
                 {questionType === 'number'?
                     <form>
-                        <input type ='text'></input>
+                        <input type ='number'></input>
                     </form> :
                     questionType === 'boolean'?
                         <form>

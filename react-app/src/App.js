@@ -9,7 +9,7 @@ function App() {
   const [login, setLogin] = useState(false);
 
   return (
-      <div>
+      <div className="App">
           {login ?
               <Main
 

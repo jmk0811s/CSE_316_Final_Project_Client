@@ -1,12 +1,45 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Profile from "./Profile";
 import EditQuestions from "./EditQuestions";
-import LogDay from "./LogDay";
+import Daylog from "./Daylog";
 import ViewData from "./ViewData";
 
-function Main(){
+//import API methods
+import {
+    getCurrentUserAPIMethod,
+    getDaylogsAPIMethod
+} from "../api/client.js";
 
-    const [currentPage, setCurrentPage] = useState('LogDay');
+function Main() {
+    const [curUser, setCurUser] = useState({});
+    const [defaultImg, setDefaultImg] = useState(true);
+    const [imgURL, setImgURL] = useState('');
+    const [daylogs, setDaylogs] = useState([]);
+    const [currentPage, setCurrentPage] = useState('Daylog');
+
+    //get daylogs from the server
+    useEffect(() => {
+        getCurrentUserAPIMethod().then((user) => {
+            if (user !== null && Object.keys(user).length !== 0) {
+                if (user.hasOwnProperty('profile_url') && user.profile_url !== '') {
+                    setDefaultImg(true);
+                    setImgURL('');
+                } else {
+                    setDefaultImg(false);
+                    setImgURL(user.profile_url);
+                }
+                setCurUser(user);
+            }
+        });
+        getDaylogsAPIMethod().then((daylogs) => {
+            setDaylogs(sortByDate(daylogs));
+            console.log(daylogs);
+        });
+    }, []);
+
+    const sortByDate = (list) => {
+        return list.sort((a, b) => b.date - a.date);
+    }
 
     const testQSet = [
         {qText: "2019 q1: bool", qType: "boolean", qDate: new Date('2019-06-28')},
@@ -63,7 +96,7 @@ function Main(){
     }
 
     let handleChange = (prop) => (event) => {
-        if (prop === "LogDay"){
+        if (prop === "Daylog"){
             setCurrentPage(prop);
         }
         else if (prop === "EditQ"){
@@ -86,7 +119,7 @@ function Main(){
                 <h2 className="Header">Day Logger</h2>
 
                 <div className= "Menus" style={{display: 'flex'}}>
-                    <button onClick={handleChange('LogDay')}>Log Day</button>
+                    <button onClick={handleChange('Daylog')}>Log Day</button>
                     <button onClick={handleChange('EditQ')}>Edit Questions</button>
                     <button onClick={handleChange('ViewData')}>View Data</button>
                 </div>
@@ -95,8 +128,8 @@ function Main(){
                     <img src= {'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
                 </button>
             </div>
-            {currentPage == 'LogDay'?
-                <LogDay logDays={testLogDaySet}></LogDay>:
+            {currentPage == 'Daylog'?
+                <Daylog logDays={testLogDaySet}></Daylog>:
                 currentPage == 'EditQ'?
                     <EditQuestions questions = {testQSet}></EditQuestions>:
                     currentPage == 'Profile'?

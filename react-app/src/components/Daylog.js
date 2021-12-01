@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import Question from "./Question";
 
-function LogDay(props){
+function Daylog(props){
     const [logDays, setLogDays] = useState(props.logDays);
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -44,4 +44,4 @@ function LogDay(props){
         </div>
     );
 }
-export default LogDay
+export default Daylog

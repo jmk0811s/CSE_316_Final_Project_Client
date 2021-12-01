@@ -1,10 +1,25 @@
+import React, {useState} from 'react'
+
 import logo from './logo.svg';
 import Main from './components/Main'
+import Login from './components/Login'
 import './App.css';
 
 function App() {
+  const [login, setLogin] = useState(false);
+
   return (
-      <Main></Main>
+      <div>
+          {login ?
+              <Main
+
+              ></Main>
+              :
+              <Login
+                  setLogin = {setLogin}
+              ></Login>
+          }
+      </div>
   );
 }
 

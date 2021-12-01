@@ -91,7 +91,9 @@ function Main(){
                     <button onClick={handleChange('ViewData')}>View Data</button>
                 </div>
 
-                <button onClick={handleChange('Profile')}>profile img</button>
+                <button className={"ProfileImg"} onClick={handleChange('Profile')} >
+                    <img src= {'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
+                </button>
             </div>
             {currentPage == 'LogDay'?
                 <LogDay logDays={testLogDaySet}></LogDay>:

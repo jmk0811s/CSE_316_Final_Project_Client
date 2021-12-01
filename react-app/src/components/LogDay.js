@@ -13,12 +13,16 @@ function LogDay(props){
     return (
         <div>
             <div className="LogSelectionBar" style={{display: "flex", justifyContent: "space-between"}}>
-                <button>{"<"}</button>
+                <button>
+                    <h2>{"<"}</h2>
+                </button>
                 <h2>
                     {selectedDate.getMonth() + '/' + selectedDate.getDay() + '/' + selectedDate.getFullYear()}
                 </h2>
 
-                <button>{">"}</button>
+                <button>
+                    <h2>{">"}</h2>
+                </button>
             </div>
             <div>
                 {sortedLogDaysByDates[currentIndex].qSet?(sortedLogDaysByDates[currentIndex].qSet.map((question)=>

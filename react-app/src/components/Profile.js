@@ -24,20 +24,22 @@ function Profile(){
     }
 
     return (
-        <div>
+        <div className={"Profile"}>
             <h3>Edit Profile</h3>
             <form className="form">
 
-                <div>
+                <div className={"ProfileTabs"}>
                     <h3>Profile photo</h3>
-                    <div style={{display: "flex"}}>
-                        <button>profile img</button>
-                        <button>Choose new image</button>
-                        <button>Remove image</button>
+                    <div className={"ProfileTab1"} style={{display: "flex"}}>
+                        <button className={"ProfileImg"}>
+                            <img src= {'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
+                        </button>
+                        <button className={"ChooseImg"}>Choose new image</button>
+                        <button className={"RemoveAndLogOut"}>Remove image</button>
                     </div>
                 </div>
 
-                <div>
+                <div className={"ProfileTabs"}>
                     <h3>Name</h3>
                     <input type="text"
                            id="iName"
@@ -46,7 +48,7 @@ function Profile(){
                            onChange={handleChange("name")}></input>
                 </div>
 
-                <div>
+                <div className={"ProfileTabs"}>
                     <h3>Email</h3>
                     <input type="text"
                            id="iEmail"
@@ -55,7 +57,7 @@ function Profile(){
                            onChange={handleChange("email")}></input>
                 </div>
 
-                <div>
+                <div className={"ProfileTabs"}>
                     <h3>Address</h3>
                     <input type="text"
                            id="iAddr1"
@@ -69,9 +71,9 @@ function Profile(){
                            onChange={handleChange("addr2")}></input>
                 </div>
 
-                <div style={{display: "flex", justifyContent: 'space-between'}}>
-                    <button>Save</button>
-                    <button>Logout</button>
+                <div style={{display: "flex", justifyContent: 'space-between', background: 'transparent'}}>
+                    <button className={"Save"}>Save</button>
+                    <button className={"RemoveAndLogOut"}>Logout</button>
                 </div>
 
             </form>

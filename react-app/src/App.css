@@ -47,12 +47,7 @@ button:hover {
   background-color: transparent;
   outline: none;
 }
-.form div{
-  background-color: var(--standardBackgroundColor);
-  border-radius: 10px;
-  margin: 5px;
-  padding: 1px;
-}
+
 
 .Question{
   background-color: var(--standardBackgroundColor);
@@ -64,6 +59,7 @@ button:hover {
 }
 
 .Question input, select{
+  border: 1px solid darkgray;
   border-radius: 5px;
   margin-top: 10px;
 }
@@ -96,7 +92,62 @@ button:hover {
   border: none;
   color: #eaf6f6;
 }
+.Save{
+  background-color: var(--actionBackgroundColor);
+  border-radius: 10px;
+  width: 80px;
+  height: 50px;
+  border: none;
+  color: #eaf6f6;
+}
 
+.ProfileImg {
+  border: none;
+  background-color: transparent;
+}
+
+.RemoveAndLogOut{
+  border: none;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.ProfileTab1{
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProfileTabs{
+  background-color: var(--standardBackgroundColor);
+  border-radius: 10px;
+
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.ProfileTabs h3{
+  margin-top: 5px;
+}
+
+.ChooseImg{
+  background-color: var(--activeColor);
+  border-radius: 7px;
+  width: 140px;
+  height: 35px;
+  border: none;
+}
+.ProfileTabs input{
+  border: 1px solid darkgray;
+  width: 100%;
+  height: 25px;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.Profile{
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
 @media all and (max-width: 600px) {
   .Header{

@@ -13,10 +13,13 @@ function Daylog(props){
             setDaylogs(daylogs);
             setCurrDaylog(daylogs[0]);
             setCurrQuestions(getQuestionsByDaylogIdAPIMethod(daylogs[0]));
-            setSelectedDate((new Date(daylogs[0].date).getDate()));
+            setSelectedDate(dateToString(new Date(daylogs[0].date)));
         })
     }, [props.daylogs]);
 
+    const dateToString = (date) => {
+        return date.getFullYear() + " / " + (date.getMonth() + 1) + " / " + date.getDate();
+    }
 
     return (
         selectedDate? (

@@ -12,7 +12,6 @@ import {
 } from "../api/client.js";
 
 function Main(props) {
-    const [curUser, setCurUser] = useState({});
     const [defaultImg, setDefaultImg] = useState(true);
     const [imgURL, setImgURL] = useState('');
     const [daylogs, setDaylogs] = useState([]);
@@ -22,6 +21,7 @@ function Main(props) {
 
     useEffect(() => {
         getCurrentUserAPIMethod().then((user) => {
+            console.log(user);
             if (user !== null && Object.keys(user).length !== 0) {
                 if (user.hasOwnProperty('profile_url') && user.profile_url !== '') {
                     setDefaultImg(true);
@@ -30,7 +30,7 @@ function Main(props) {
                     setDefaultImg(false);
                     setImgURL(user.profile_url);
                 }
-                setCurUser(user);
+                props.setCurrUser(user);
             }
         });
         getDaylogsAPIMethod().then((daylogs) => {
@@ -118,7 +118,7 @@ function Main(props) {
         // createDaylogAPIMethod(nDaylog).then(()=>{
         // });
         //
-        getDaylogsAPIMethod().then(daylogs=>{
+        getDaylogsAPIMethod().then((daylogs)=>{
             console.log(daylogs[0]._id);
         })
 
@@ -131,6 +131,7 @@ function Main(props) {
     }
     let logout = () => {
         logoutUserAPIMethod().then(() => {
+            props.setCurrUser({});
             props.setLogin(false);
         });
     }
@@ -166,13 +167,16 @@ function Main(props) {
                 </button>
 
             </div>
-            {currentPage == 'Daylog'?
-                <Daylog daylogs={daylogs}></Daylog>:
-                currentPage == 'EditQ'?
-                    <EditQuestions questions = {testQSet}></EditQuestions>:
-                    currentPage == 'Profile'?
-                        <Profile></Profile>:
-                        <ViewData></ViewData>
+            {
+                currentPage == 'Daylog' ?
+                    <Daylog daylogs={daylogs}></Daylog> :
+                    currentPage == 'EditQ'?
+                        <EditQuestions questions = {testQSet}></EditQuestions> :
+                        currentPage == 'Profile'?
+                                <Profile
+                                    currUser={props.currUser}
+                                ></Profile> :
+                                <ViewData></ViewData>
             }
 
 

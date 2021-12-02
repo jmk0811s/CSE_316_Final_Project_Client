@@ -30,6 +30,8 @@ function App() {
           {login ?
               <Main
                   setLogin = {setLogin}
+                  currUser = {currUser}
+                  setCurrUser = {setCurrUser}
               ></Main>
               :
               <Login

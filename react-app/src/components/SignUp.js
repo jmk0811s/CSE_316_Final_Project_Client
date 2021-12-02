@@ -151,7 +151,7 @@ function SignUp(props) {
                     </li>
 
                     <li>
-                        {error?<label style = {{color: 'red'}}>{error}</label>:<></>}
+                        {error ? <label style = {{color: 'red'}}>{error}</label> : <></>}
                     </li>
                     <li>
                         <button onClick={testRegister} type="submit" style={{width: '30%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'green',color: '#ffffff'}}>Save</button>

@@ -4,7 +4,6 @@ import useWindowDimensions from "./UseWindowDimensions";
 import SignUp from "./SignUp";
 import {loginUserAPIMethod} from "../api/client";
 
-
 function Login(props){
 
     const [email, setEmail] = useState();
@@ -82,7 +81,7 @@ function Login(props){
                                onChange={handleChange("pw")}></input>
                     </li>
                     <li>
-                        {error?<label style = {{color: 'red'}}>{error}</label>:<></>}
+                        {error ? <label style = {{color: 'red'}}>{error}</label>:<></>}
                     </li>
                     <li>
                         <button onClick={testLogIn} type="submit" style={{alignItems: 'center', width: '100%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'rgb(58, 99, 197)',color: '#ffffff'}}>Log in</button>

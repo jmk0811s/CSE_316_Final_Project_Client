@@ -1,12 +1,22 @@
 import React, {useEffect, useState} from 'react'
 
 
-function Profile(){
+function Profile(props) {
 
     const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [addr1, setAddr1] = useState();
     const [addr2, setAddr2] = useState();
+
+    useEffect(() => {
+        let currUser = props.currUser;
+        if (currUser !== undefined) {
+            setName(currUser.name);
+            setEmail(currUser.email);
+            setAddr1(currUser.address1);
+            setAddr2(currUser.address2);
+        }
+    }, [])
 
     let handleChange = (prop) => (event) => {
         if (prop === "name"){

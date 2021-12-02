@@ -4,24 +4,23 @@ import useWindowDimensions from "./UseWindowDimensions";
 import SignUp from "./SignUp";
 import {loginUserAPIMethod} from "../api/client";
 
-
 function Login(props){
 
     const [email, setEmail] = useState();
     const [pw, setPw] = useState();
-    const [signT, setSignT] = useState();
+    const [showSignup, setShowSignup] = useState(false);
     const [error, setError] = useState();
 
     useEffect(() => {
-        setSignT(signT);
-    },[signT])
-
+        setShowSignup(showSignup);
+    },[showSignup])
 
     const GetWidth = () => {
         const {width, height} = useWindowDimensions();
         return width;
     };
 
+    let width = GetWidth();
 
     const testLogIn = (e) => {
         e.preventDefault();
@@ -40,8 +39,6 @@ function Login(props){
         });
     }
 
-    let width = GetWidth();
-
     let handleChange = (prop) => (event) => {
         if (prop === "email"){
             setEmail(event.target.value);
@@ -49,8 +46,8 @@ function Login(props){
         else if (prop === "pw"){
             setPw(event.target.value);
         }
-        else if (prop === 'signT'){
-            setSignT(true);
+        else if (prop === 'showSignup'){
+            setShowSignup(true);
         }
     }
 
@@ -84,7 +81,7 @@ function Login(props){
                                onChange={handleChange("pw")}></input>
                     </li>
                     <li>
-                        {error?<label style = {{color: 'red'}}>{error}</label>:<></>}
+                        {error ? <label style = {{color: 'red'}}>{error}</label>:<></>}
                     </li>
                     <li>
                         <button onClick={testLogIn} type="submit" style={{alignItems: 'center', width: '100%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'rgb(58, 99, 197)',color: '#ffffff'}}>Log in</button>
@@ -93,11 +90,17 @@ function Login(props){
 
                 </form>
                 <li style ={{paddingTop:20, textAlign: 'center'}}>
-                    <button onClick={handleChange('signT')} style={{alignItems: 'center', width: '30%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'green',color: '#ffffff'}}>Create New Account</button>
+                    <button onClick={handleChange('showSignup')} style={{alignItems: 'center', width: '30%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'green',color: '#ffffff'}}>Create New Account</button>
                 </li>
             </div>
-            <SignUp signT={signT}
-                    setSignT = {setSignT}></SignUp>
+            {showSignup ?
+                <SignUp
+                    showSignup={showSignup}
+                    setShowSignup = {setShowSignup}
+                    setLogin={props.setLogin}
+                ></SignUp>
+                : null
+            }
         </div>
 
     );

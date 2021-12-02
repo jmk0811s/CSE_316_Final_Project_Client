@@ -9,42 +9,37 @@ function SignUp(props) {
     const [addr1,setAddr1] = useState();
     const [addr2,setAddr2] = useState();
     const [profileUrl, setProfileUrl] = useState("");
-
-    const [signT, setSignT] = useState(props.signT);
     const [error, setError] = useState();
 
     useEffect(() => {
         setError(error);
     },[error])
 
-    useEffect(() => {
-        setSignT(signT);
-    },[signT])
-
-    useEffect(()=>{
-        setSignT(props.signT)
-    },[props])
-
     const testRegister = (e) => {
         e.preventDefault();
-        const user1 = {
-            "name" : name,
-            "email" : email,
-            "password" : pw,
-            "address1" : addr1,
-            "address2" : addr2,
-            "profile_url" : profileUrl
+        if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)) { // email validation
+            const user1 = {
+                "name" : name,
+                "email" : email,
+                "password" : pw,
+                "address1" : addr1,
+                "address2" : addr2,
+                "profile_url" : profileUrl
+            }
+            registerUserAPIMethod(user1).then(ret => {
+                console.log(ret);
+                if(ret){
+                    props.setShowSignup(false);
+                    props.setLogin(true);
+                }
+                else{
+                    setError("Invalid information. Properly fill out the information");
+                }
+            });
         }
-        registerUserAPIMethod(user1).then(ret => {
-            console.log(ret);
-            if(ret){
-                setSignT(false);
-                props.setSignT(false);
-            }
-            else{
-                setError("Invalid information. Properly fill out the information");
-            }
-        });
+        else {
+            setError("Invalid email format");
+        }
     }
 
 
@@ -81,13 +76,13 @@ function SignUp(props) {
         }
         else if (prop =='x'){
             event.preventDefault();
-            setSignT(props.setSignT(false));
+            props.setShowSignup(false);
             setError("");
         }
     }
 
     return(
-        <div className="signUp" style={{display: signT ? 'block': 'none'}}>
+        <div className="signUp">
             <div className="signUp-content" >
                 <form>
                     <li>
@@ -156,7 +151,7 @@ function SignUp(props) {
                     </li>
 
                     <li>
-                        {error?<label style = {{color: 'red'}}>{error}</label>:<></>}
+                        {error ? <label style = {{color: 'red'}}>{error}</label> : <></>}
                     </li>
                     <li>
                         <button onClick={testRegister} type="submit" style={{width: '30%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'green',color: '#ffffff'}}>Save</button>

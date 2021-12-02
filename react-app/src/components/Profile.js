@@ -32,6 +32,7 @@ function Profile(){
                     <h3>Profile photo</h3>
                     <div className={"ProfileTab1"} style={{display: "flex"}}>
                         <button className={"ProfileImg"}>
+                            {/*default img for now*/}
                             <img src= {'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
                         </button>
                         <button className={"ChooseImg"}>Choose new image</button>

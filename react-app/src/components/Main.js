@@ -7,7 +7,7 @@ import ViewData from "./ViewData";
 //import API methods
 import {
     getCurrentUserAPIMethod,
-    getDaylogsAPIMethod
+    getDaylogsAPIMethod, loginUserAPIMethod, logoutUserAPIMethod
 } from "../api/client.js";
 
 function Main() {
@@ -18,24 +18,25 @@ function Main() {
     const [currentPage, setCurrentPage] = useState('Daylog');
 
     //get daylogs from the server
-    useEffect(() => {
-        getCurrentUserAPIMethod().then((user) => {
-            if (user !== null && Object.keys(user).length !== 0) {
-                if (user.hasOwnProperty('profile_url') && user.profile_url !== '') {
-                    setDefaultImg(true);
-                    setImgURL('');
-                } else {
-                    setDefaultImg(false);
-                    setImgURL(user.profile_url);
-                }
-                setCurUser(user);
-            }
-        });
-        getDaylogsAPIMethod().then((daylogs) => {
-            setDaylogs(sortByDate(daylogs));
-            console.log(daylogs);
-        });
-    }, []);
+
+    // useEffect(() => {
+    //     getCurrentUserAPIMethod().then((user) => {
+    //         if (user !== null && Object.keys(user).length !== 0) {
+    //             if (user.hasOwnProperty('profile_url') && user.profile_url !== '') {
+    //                 setDefaultImg(true);
+    //                 setImgURL('');
+    //             } else {
+    //                 setDefaultImg(false);
+    //                 setImgURL(user.profile_url);
+    //             }
+    //             setCurUser(user);
+    //         }
+    //     });
+    //     getDaylogsAPIMethod().then((daylogs) => {
+    //         setDaylogs(sortByDate(daylogs));
+    //         console.log(daylogs);
+    //     });
+    // }, []);
 
     const sortByDate = (list) => {
         return list.sort((a, b) => b.date - a.date);
@@ -48,6 +49,7 @@ function Main() {
         {qText: "2019 q4: Number", qType: "number", qDate: new Date('2019-06-28')},
         {qText: "2019 q5: multiple", qType: "multiple", qDate: new Date('2019-06-28'), qChoices: ["Ok day", "Great Day", "Bad day"]},
     ];
+
     const testLogDaySet =[
         {qDate: new Date('2019-06-28'), qSet: testQSet},
         {
@@ -68,14 +70,6 @@ function Main() {
             ]
         },
     ]
-
-    // const findQuestionByDate = (qDate) =>{
-    //     testLogDaySet.map((q)=> {
-    //         if(q.qDate == qDate){
-    //
-    //         }
-    //     })
-    // }
 
     const editQuestion = (qDate,prop, newValue) => {
 
@@ -111,6 +105,14 @@ function Main() {
 
     }
 
+    let login = () => {
+        let myId = {email: "a@a.com", password: "123123"}
+        loginUserAPIMethod(myId).then();
+    }
+    let logout = () => {
+        logoutUserAPIMethod().then();
+    }
+
 
     return (
         <div className="Main">
@@ -124,9 +126,18 @@ function Main() {
                     <button onClick={handleChange('ViewData')}>View Data</button>
                 </div>
 
+                <button onClick={login}>
+                    testLogin
+                </button>
+
+                <button onClick={logout}>
+                    testLogout
+                </button>
+
                 <button className={"ProfileImg"} onClick={handleChange('Profile')} >
                     <img src= {'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
                 </button>
+
             </div>
             {currentPage == 'Daylog'?
                 <Daylog logDays={testLogDaySet}></Daylog>:

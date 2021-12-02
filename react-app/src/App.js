@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 import logo from './logo.svg';
 import Main from './components/Main'
@@ -6,17 +6,27 @@ import Login from './components/Login'
 import './App.css';
 
 function App() {
-  const [login, setLogin] = useState(false);
+    const [login, setLogin] = useState(false);
+    const [currUser, setCurrUser] = useState();
+
+    useEffect(() =>{
+        setLogin(login)
+    }, [login])
+    useEffect(() =>{
+        setCurrUser(currUser)
+    }, [currUser])
 
   return (
       <div className="App">
           {login ?
-              <Main
+              <Main>
 
-              ></Main>
+              </Main>
               :
               <Login
                   setLogin = {setLogin}
+                  setCurrUser = {setCurrUser}
+                  login = {login}
               ></Login>
           }
       </div>

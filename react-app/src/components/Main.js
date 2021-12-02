@@ -18,7 +18,6 @@ function Main(props) {
     const [currentPage, setCurrentPage] = useState('Daylog');
 
     //get daylogs from the server
-
     useEffect(() => {
         getCurrentUserAPIMethod().then((user) => {
             console.log(user);

@@ -27,24 +27,29 @@ function SignUp(props) {
 
     const testRegister = (e) => {
         e.preventDefault();
-        const user1 = {
-            "name" : name,
-            "email" : email,
-            "password" : pw,
-            "address1" : addr1,
-            "address2" : addr2,
-            "profile_url" : profileUrl
+        if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)) { // email validation
+            const user1 = {
+                "name" : name,
+                "email" : email,
+                "password" : pw,
+                "address1" : addr1,
+                "address2" : addr2,
+                "profile_url" : profileUrl
+            }
+            registerUserAPIMethod(user1).then(ret => {
+                console.log(ret);
+                if(ret){
+                    setSignT(false);
+                    props.setSignT(false);
+                }
+                else{
+                    setError("Invalid information. Properly fill out the information");
+                }
+            });
         }
-        registerUserAPIMethod(user1).then(ret => {
-            console.log(ret);
-            if(ret){
-                setSignT(false);
-                props.setSignT(false);
-            }
-            else{
-                setError("Invalid information. Properly fill out the information");
-            }
-        });
+        else {
+            setError("Invalid email format");
+        }
     }
 
 

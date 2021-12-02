@@ -24,9 +24,9 @@ function App() {
               </Main>
               :
               <Login
+                  login = {login}
                   setLogin = {setLogin}
                   setCurrUser = {setCurrUser}
-                  login = {login}
               ></Login>
           }
       </div>

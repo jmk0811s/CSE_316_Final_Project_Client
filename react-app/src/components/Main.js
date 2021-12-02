@@ -6,6 +6,7 @@ import ViewData from "./ViewData";
 
 //import API methods
 import {
+    createDaylogAPIMethod,
     getCurrentUserAPIMethod,
     getDaylogsAPIMethod, loginUserAPIMethod, logoutUserAPIMethod
 } from "../api/client.js";
@@ -19,24 +20,24 @@ function Main() {
 
     //get daylogs from the server
 
-    // useEffect(() => {
-    //     getCurrentUserAPIMethod().then((user) => {
-    //         if (user !== null && Object.keys(user).length !== 0) {
-    //             if (user.hasOwnProperty('profile_url') && user.profile_url !== '') {
-    //                 setDefaultImg(true);
-    //                 setImgURL('');
-    //             } else {
-    //                 setDefaultImg(false);
-    //                 setImgURL(user.profile_url);
-    //             }
-    //             setCurUser(user);
-    //         }
-    //     });
-    //     getDaylogsAPIMethod().then((daylogs) => {
-    //         setDaylogs(sortByDate(daylogs));
-    //         console.log(daylogs);
-    //     });
-    // }, []);
+    useEffect(() => {
+        getCurrentUserAPIMethod().then((user) => {
+            if (user !== null && Object.keys(user).length !== 0) {
+                if (user.hasOwnProperty('profile_url') && user.profile_url !== '') {
+                    setDefaultImg(true);
+                    setImgURL('');
+                } else {
+                    setDefaultImg(false);
+                    setImgURL(user.profile_url);
+                }
+                setCurUser(user);
+            }
+        });
+        getDaylogsAPIMethod().then((daylogs) => {
+            setDaylogs(sortByDate(daylogs));
+            console.log(daylogs);
+        });
+    }, []);
 
     const sortByDate = (list) => {
         return list.sort((a, b) => b.date - a.date);
@@ -105,6 +106,25 @@ function Main() {
 
     }
 
+    let test = () => {
+        // let nCreator = "61a88fa0c23c39a2f10be620";
+        // let nDate = new Date();
+        //
+        // let nDaylog = {
+        //     creator: nCreator,
+        //     date: nDate,
+        // }
+        //
+        // createDaylogAPIMethod(nDaylog).then(()=>{
+        // });
+        //
+        getDaylogsAPIMethod().then(daylogs=>{
+            console.log(daylogs[0]._id);
+        })
+
+    }
+
+
     let login = () => {
         let myId = {email: "a@a.com", password: "123123"}
         loginUserAPIMethod(myId).then();
@@ -126,6 +146,11 @@ function Main() {
                     <button onClick={handleChange('ViewData')}>View Data</button>
                 </div>
 
+
+                <button onClick={test}>
+                    test
+                </button>
+
                 <button onClick={login}>
                     testLogin
                 </button>
@@ -140,7 +165,7 @@ function Main() {
 
             </div>
             {currentPage == 'Daylog'?
-                <Daylog logDays={testLogDaySet}></Daylog>:
+                <Daylog daylogs={daylogs}></Daylog>:
                 currentPage == 'EditQ'?
                     <EditQuestions questions = {testQSet}></EditQuestions>:
                     currentPage == 'Profile'?

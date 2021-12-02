@@ -31,11 +31,10 @@ export const loginUserAPIMethod = (user) => {
 }
 
 //logout
-export const logoutUserAPIMethod = (user) => {
+export const logoutUserAPIMethod = () => {
     return fetch(`/api/logout`, {
         ...defaultHeaders,
         method: 'POST',
-        body: JSON.stringify(user),
     }).then(checkLoginStatus);
 }
 
@@ -144,6 +143,13 @@ export const deleteDaylogByIdAPIMethod = (daylogId) => {
 //get questions
 export const getQuestionsAPIMethod = () => {
     return fetch(`/api/questions`, {
+        ...defaultHeaders,
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+export const getQuestionsByDaylogIdAPIMethod = (daylogId) => {
+    return fetch(`/api/questions/findByDaylog/${daylogId}`, {
         ...defaultHeaders,
     }).then(checkStatus)
         .then(parseJSON);

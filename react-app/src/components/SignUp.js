@@ -41,6 +41,7 @@ function SignUp(props) {
                 if(ret){
                     setSignT(false);
                     props.setSignT(false);
+                    props.setLogin(true);
                 }
                 else{
                     setError("Invalid information. Properly fill out the information");

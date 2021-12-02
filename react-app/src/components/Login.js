@@ -99,6 +99,7 @@ function Login(props){
             <SignUp
                 signT={signT}
                 setSignT = {setSignT}
+                setLogin={props.setLogin}
             ></SignUp>
         </div>
 

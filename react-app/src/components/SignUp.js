@@ -9,21 +9,11 @@ function SignUp(props) {
     const [addr1,setAddr1] = useState();
     const [addr2,setAddr2] = useState();
     const [profileUrl, setProfileUrl] = useState("");
-
-    const [signT, setSignT] = useState(props.signT);
     const [error, setError] = useState();
 
     useEffect(() => {
         setError(error);
     },[error])
-
-    useEffect(() => {
-        setSignT(signT);
-    },[signT])
-
-    useEffect(()=>{
-        setSignT(props.signT)
-    },[props])
 
     const testRegister = (e) => {
         e.preventDefault();
@@ -39,8 +29,7 @@ function SignUp(props) {
             registerUserAPIMethod(user1).then(ret => {
                 console.log(ret);
                 if(ret){
-                    setSignT(false);
-                    props.setSignT(false);
+                    props.setShowSignup(false);
                     props.setLogin(true);
                 }
                 else{
@@ -87,13 +76,13 @@ function SignUp(props) {
         }
         else if (prop =='x'){
             event.preventDefault();
-            setSignT(props.setSignT(false));
+            props.setShowSignup(false);
             setError("");
         }
     }
 
     return(
-        <div className="signUp" style={{display: signT ? 'block': 'none'}}>
+        <div className="signUp">
             <div className="signUp-content" >
                 <form>
                     <li>

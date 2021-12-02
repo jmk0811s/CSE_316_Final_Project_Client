@@ -8,7 +8,7 @@ import ViewData from "./ViewData";
 import {
     createDaylogAPIMethod,
     getCurrentUserAPIMethod,
-    getDaylogsAPIMethod, loginUserAPIMethod, logoutUserAPIMethod
+    getDaylogsAPIMethod, getQuestionsByDaylogIdAPIMethod, loginUserAPIMethod, logoutUserAPIMethod
 } from "../api/client.js";
 
 function Main() {
@@ -120,7 +120,11 @@ function Main() {
         //
         getDaylogsAPIMethod().then(daylogs=>{
             console.log(daylogs[0]._id);
+            getQuestionsByDaylogIdAPIMethod(daylogs[0]._id).then((questions)=>{
+                console.log(questions)
+            })
         })
+
 
     }
 

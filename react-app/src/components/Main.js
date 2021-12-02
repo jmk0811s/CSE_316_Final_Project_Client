@@ -11,7 +11,7 @@ import {
     getDaylogsAPIMethod, loginUserAPIMethod, logoutUserAPIMethod
 } from "../api/client.js";
 
-function Main() {
+function Main(props) {
     const [curUser, setCurUser] = useState({});
     const [defaultImg, setDefaultImg] = useState(true);
     const [imgURL, setImgURL] = useState('');
@@ -130,7 +130,9 @@ function Main() {
         loginUserAPIMethod(myId).then();
     }
     let logout = () => {
-        logoutUserAPIMethod().then();
+        logoutUserAPIMethod().then(() => {
+            props.setLogin(false);
+        });
     }
 
 

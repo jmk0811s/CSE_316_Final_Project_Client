@@ -4,13 +4,22 @@ import logo from './logo.svg';
 import Main from './components/Main'
 import Login from './components/Login'
 import './App.css';
+import {getCurrentUserAPIMethod} from './api/client.js';
 
 function App() {
     const [login, setLogin] = useState(false);
     const [currUser, setCurrUser] = useState();
 
     useEffect(() =>{
-        setLogin(login)
+        getCurrentUserAPIMethod().then((user) => {
+            console.log(user);
+            if (user != null) {
+                setLogin(true);
+            }
+            else {
+                setLogin(false);
+            }
+        });
     }, [login])
     useEffect(() =>{
         setCurrUser(currUser)
@@ -19,9 +28,9 @@ function App() {
   return (
       <div className="App">
           {login ?
-              <Main>
-
-              </Main>
+              <Main
+                  setLogin = {setLogin}
+              ></Main>
               :
               <Login
                   login = {login}

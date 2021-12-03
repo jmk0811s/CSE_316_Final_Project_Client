@@ -1,30 +1,74 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 function Question(props){
-
-    const [questionDate, setQuestionDate] =useState(props.qDate);
-    const [questionText, setQuestionText] =useState(props.qText);
-    const [questionType, setQuestionType] =useState(props.qType);
+    const [questionType, setQuestionType] =useState();
+    const [questionHeader, setQuestionHeader] =useState();
+    const [questionAnswer, setQuestionAnswer] =useState();
+    const [questionDate, setQuestionDate] =useState();
     const [editMode, setEditMode] = useState(props.editMode);
     const [multipleChoices, setMultipleChoices] = useState(props.qChoices);
+
+    useEffect(() => {
+        setQuestionType(props.type);
+        setQuestionHeader(props.header);
+        setQuestionAnswer(props.answer);
+        setQuestionDate(props.date);
+        setEditMode(props.editMode);
+        console.log("Type: " + questionType);
+    }, [props]);
 
     const handleSelect = (prop)=> (e) => {
         if(prop == "qType"){
             setQuestionType(e.target.value)
         }
         else if(prop == "qText"){
-            setQuestionText(e.target.value)
+            setQuestionHeader(e.target.value)
         }
 
     }
 
-    console.log(questionType);
+    return (
+        editMode ?
+            //edit mode
+            <div className="Question">
 
-    return(editMode?
+            </div>
+            :
+            //read-only mode
+            <div className="Question">
+                {
+                    questionType == "Text" ?
+                        <div>
+                            Text type
+                        </div>
+                        :
+                        questionType == "Number" ?
+                            <div>
+                                Number type
+                            </div>
+                            :
+                            questionType == "Boolean" ?
+                                <div>
+                                    Boolean type
+                                </div>
+                                :
+                                questionType == "MultipleChoice" ?
+                                    <div>
+                                        Multiple choice type
+                                    </div>
+                                    :
+                                    null
+                }
+            </div>
+
+
+
+        /*
+        (editMode?
             (<div className="Question">
                 <form>
                     <input type="text"
-                           value={questionText}
+                           value={questionHeader}
                            onChange={handleSelect("qText")}></input>
                 </form>
                 <div style={{display: "flex",justifyContent: "space-between"}}>
@@ -33,10 +77,8 @@ function Question(props){
                         <option value="boolean">boolean</option>
                         <option value="text">text</option>
                         <option value="multiple">multiple choice</option>
-                        {/* select 함에 따라 question 의 state 이 바뀌도록*/}
+                        {}
                     </select>
-
-                    {/*if option 4 -> multiple choice 쓸 수 있는 input fields들 */}
 
                     <button style={{background:"transparent", border: "none"}}>
                         <span className="material-icons">delete_outline</span>
@@ -44,7 +86,7 @@ function Question(props){
                 </div>
             </div>):
             (<div className="Question">
-                {questionText}
+                {questionHeader}
                 <div></div>
                 {questionType === 'number'?
                     <form>
@@ -73,7 +115,10 @@ function Question(props){
                             </form>
                 }
             </div>)
+        )
 
+
+         */
     );
 }
 export default Question

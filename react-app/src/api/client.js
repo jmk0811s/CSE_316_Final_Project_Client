@@ -148,8 +148,8 @@ export const getQuestionsAPIMethod = () => {
         .then(parseJSON);
 }
 
-export const getQuestionsByDaylogIdAPIMethod = (daylog) => {
-    return fetch(`/api/questions/findByDaylog/${daylog._id}`, {
+export const getQuestionsByDaylogIdAPIMethod = (daylogId) => {
+    return fetch(`/api/questions/findByDaylog/${daylogId}`, {
         ...defaultHeaders,
     }).then(checkStatus)
         .then(parseJSON);

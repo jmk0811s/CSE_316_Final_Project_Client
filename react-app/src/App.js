@@ -13,17 +13,16 @@ function App() {
     useEffect(() =>{
         getCurrentUserAPIMethod().then((user) => {
             console.log(user);
-            if (user != null) {
+            if (user != null && Object.keys(user).length != 0) {
                 setLogin(true);
+                setCurrUser(user);
             }
             else {
                 setLogin(false);
+                setCurrUser({});
             }
         });
-    }, [login])
-    useEffect(() =>{
-        setCurrUser(currUser)
-    }, [currUser])
+    }, [])
 
   return (
       <div className="App">
@@ -35,7 +34,6 @@ function App() {
               ></Main>
               :
               <Login
-                  login = {login}
                   setLogin = {setLogin}
                   setCurrUser = {setCurrUser}
               ></Login>

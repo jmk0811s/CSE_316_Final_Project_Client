@@ -4,6 +4,7 @@ function Question(props){
     const [questionType, setQuestionType] =useState();
     const [questionHeader, setQuestionHeader] =useState();
     const [questionAnswer, setQuestionAnswer] =useState();
+    const [questionMDate, setQuestionMDate] =useState();
     const [questionDate, setQuestionDate] =useState();
     const [editMode, setEditMode] = useState(props.editMode);
     const [multipleChoices, setMultipleChoices] = useState(props.qChoices);
@@ -12,10 +13,11 @@ function Question(props){
         setQuestionType(props.type);
         setQuestionHeader(props.header);
         setQuestionAnswer(props.answer);
+        setQuestionMDate(props.mdate);
         setQuestionDate(props.date);
         setEditMode(props.editMode);
-        console.log("Type: " + questionType);
-        console.log("Header: " + questionHeader);
+        //console.log("Type: " + questionType);
+        //console.log("Header: " + questionHeader);
     }, [props]);
 
     const handleSelect = (prop)=> (e) => {
@@ -69,7 +71,7 @@ function Question(props){
                                     //MultipleChoice type
                                     <div className="question-answer">
                                         <div className="radio-wrapper">
-                                            
+
                                         </div>
                                     </div>
                                     :

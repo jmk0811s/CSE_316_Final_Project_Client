@@ -28,11 +28,10 @@ function Main(props) {
     }, [props.currUser]);
 
     useEffect(() => {
-        console.log(currUser);
         if (currUser !== null && currUser !== undefined) {
             //get daylogs of current user
             getDaylogsAPIMethod().then((daylogs) => {
-                setDaylogs(sortByDate(daylogs));
+                setDaylogs(sortDaylogsByDate(daylogs));
                 //console.log(daylogs);
             });
 
@@ -48,8 +47,8 @@ function Main(props) {
     }, [currUser]);
 
 
-    const sortByDate = (list) => {
-        return list.sort((a, b) => b.date - a.date);
+    const sortDaylogsByDate = (list) => {
+        return list.sort((a, b) => new Date(a.date) - new Date(b.date));
     }
 
     const logout = () => {

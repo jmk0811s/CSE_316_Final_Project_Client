@@ -23,13 +23,17 @@ function Daylog(props){
             setCurrDaylog(daylogs[0]);
             setCurrDate(dateToString(new Date(daylogs[0].date)));
             getQuestionsByDaylogIdAPIMethod(daylogs[0]._id).then((questions) => {
-                setCurrQuestions(questions);
+                setCurrQuestions(sortQuestionsByDate(questions));
             });
         }
     }, [daylogs]);
 
     const dateToString = (date) => {
         return date.getFullYear() + " / " + (date.getMonth() + 1) + " / " + date.getDate();
+    }
+
+    const sortQuestionsByDate = (list) => {
+        return list.sort((a, b) => new Date(a.mdate) - new Date(b.mdate));
     }
 
     const populateQuestions = () => {
@@ -40,6 +44,7 @@ function Daylog(props){
                 answer: {
                     text: 'Sample answer 1'
                 },
+                mdate: new Date("2021-12-01"),
                 daylog: currDaylog._id
             },
             {
@@ -48,6 +53,7 @@ function Daylog(props){
                 answer: {
                     number: 2
                 },
+                mdate: new Date("2021-12-02"),
                 daylog: currDaylog._id
             },
             {
@@ -56,6 +62,7 @@ function Daylog(props){
                 answer: {
                     boolean: true
                 },
+                mdate: new Date("2021-12-03"),
                 daylog: currDaylog._id
             },
             {
@@ -64,6 +71,7 @@ function Daylog(props){
                 answer: {
                     boolean: true
                 },
+                mdate: new Date("2021-12-04"),
                 daylog: currDaylog._id
             }
         ];
@@ -99,6 +107,7 @@ function Daylog(props){
                                             type = {question.type}
                                             header = {question.header}
                                             answer = {question.answer}
+                                            mdate = {question.mdate}
                                             date = {currDate}
                                             editMode = {false}
                                         />

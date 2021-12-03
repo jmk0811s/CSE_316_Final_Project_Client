@@ -36,7 +36,7 @@ function Daylog(props){
         let questions = [
             {
                 type: 'Text',
-                header: 'Sample Question 1',
+                header: 'Sample Question 1 (Text type)',
                 answer: {
                     text: 'Sample answer 1'
                 },
@@ -44,7 +44,7 @@ function Daylog(props){
             },
             {
                 type: 'Number',
-                header: 'Sample Question 2',
+                header: 'Sample Question 2 (Number type)',
                 answer: {
                     number: 2
                 },
@@ -52,7 +52,15 @@ function Daylog(props){
             },
             {
                 type: 'Boolean',
-                header: 'Sample Question 3',
+                header: 'Sample Question 3 (Boolean type)',
+                answer: {
+                    boolean: true
+                },
+                daylog: currDaylog._id
+            },
+            {
+                type: 'MultipleChoice',
+                header: 'Sample Question 4 (MultipleChoice type)',
                 answer: {
                     boolean: true
                 },
@@ -60,11 +68,12 @@ function Daylog(props){
             }
         ];
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 4; i++) {
             createQuestionAPIMethod(questions[i]).then((question) => {
                 console.log(question + " " + (i + 1) + " added.");
             });
         }
+        setCurrQuestions(questions);
     }
 
     return (
@@ -88,7 +97,7 @@ function Daylog(props){
                                     <li style={{listStyle: "none",padding: "5px"}}>
                                         <Question
                                             type = {question.type}
-                                            header = {question.text}
+                                            header = {question.header}
                                             answer = {question.answer}
                                             date = {currDate}
                                             editMode = {false}

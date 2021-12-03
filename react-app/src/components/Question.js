@@ -15,6 +15,7 @@ function Question(props){
         setQuestionDate(props.date);
         setEditMode(props.editMode);
         console.log("Type: " + questionType);
+        console.log("Header: " + questionHeader);
     }, [props]);
 
     const handleSelect = (prop)=> (e) => {
@@ -36,25 +37,40 @@ function Question(props){
             :
             //read-only mode
             <div className="Question">
+                <div className="question-header">
+                    {questionHeader}
+                </div>
                 {
                     questionType == "Text" ?
-                        <div>
-                            Text type
+                        //Text type
+                        <div className="question-answer">
+                            {questionAnswer.text}
                         </div>
                         :
                         questionType == "Number" ?
-                            <div>
-                                Number type
+                            //Number type
+                            <div className="question-answer">
+                                <input
+                                    type="text"
+                                    value={questionAnswer.number}
+                                ></input>
                             </div>
                             :
                             questionType == "Boolean" ?
-                                <div>
-                                    Boolean type
+                                //Boolean type
+                                <div className="question-answer">
+                                    <div className="radio-wrapper">
+                                        <label><input type="radio" name="radio" value="true" checked={questionAnswer.boolean}/>true</label>
+                                        <label><input type="radio" name="radio" value="false" checked={!questionAnswer.boolean}/>false</label>
+                                    </div>
                                 </div>
                                 :
                                 questionType == "MultipleChoice" ?
-                                    <div>
-                                        Multiple choice type
+                                    //MultipleChoice type
+                                    <div className="question-answer">
+                                        <div className="radio-wrapper">
+                                            
+                                        </div>
                                     </div>
                                     :
                                     null

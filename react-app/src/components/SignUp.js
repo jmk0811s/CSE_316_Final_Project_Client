@@ -11,6 +11,10 @@ function SignUp(props) {
     const [profileUrl, setProfileUrl] = useState("");
     const [error, setError] = useState();
 
+
+    useEffect(() => {
+        setProfileUrl(profileUrl);
+    },[profileUrl])
     useEffect(() => {
         setError(error);
     },[error])
@@ -82,82 +86,69 @@ function SignUp(props) {
     }
 
     return(
-        <div className="signUp">
-            <div className="signUp-content" >
-                <form>
-                    <li>
-                        <div style={{display: 'flex' ,justifyContent: 'space-between'}}>
-                            <h2>Sign Up</h2>
-                            <button id="x" style={{border: 'none', background: 'transparent', justifyContent: 'space-between'}} onClick={handleChange("x")}>X</button>
-                        </div>
-                    </li>
-                    <li id="name">
-                        <p style={{margin: 0}}>Name</p>
-                        <input type="text"
-                               id="iName"
-                               name="Name"
-                               value = {name}
-                               style={{width: '100%', alignItems: 'center'}}
-                               onChange={handleChange("name")}></input>
-                    </li>
-                    <li id="email">
-                        <p style={{margin: 0}}>Email</p>
-                        <input type="text"
-                               id="iEmail"
-                               name="Email"
-                               value = {email}
-                               style={{width: '100%', alignItems: 'center'}}
-                               onChange={handleChange("email")}></input>
-                    </li>
-                    <li id="password">
-                        <p style={{margin: 0}}>Password</p>
-                        <input type="text"
-                               id="iPw"
-                               name="pw"
-                               value = {pw}
-                               style={{width: '100%', alignItems: 'center'}}
-                               onChange={handleChange("pw")}></input>
-                    </li>
+        <div className="SignUp">
+            <form className="SignUpContents">
+                <div style={{display: 'flex' ,justifyContent: 'space-between'}}>
+                    <h2>Sign Up</h2>
+                    <button id="x" style={{border: 'none', background: 'transparent', justifyContent: 'space-between'}} onClick={handleChange("x")}>X</button>
+                </div>
 
-                    <li id="addr1">
-                        <p style={{margin: 0}}>Address 1</p>
-                        <input type="text"
-                               id="iAddr1"
-                               name="addr1"
-                               value = {addr1}
-                               style={{width: '100%', alignItems: 'center'}}
-                               onChange={handleChange("addr1")}></input>
-                    </li>
+                <p style={{margin: 0}}>Name</p>
+                <input type="text"
+                       id="iName"
+                       name="Name"
+                       value = {name}
+                       style={{width: '100%', alignItems: 'center'}}
+                       onChange={handleChange("name")}></input>
 
-                    <li id="addr2">
-                        <p style={{margin: 0}}>Address 2</p>
-                        <input type="text"
-                               id="iAddr2"
-                               name="addr2"
-                               value = {addr2}
-                               style={{width: '100%', alignItems: 'center'}}
-                               onChange={handleChange("addr2")}></input>
-                    </li>
+                <p style={{margin: 0}}>Email</p>
+                <input type="text"
+                       id="iEmail"
+                       name="Email"
+                       value = {email}
+                       style={{width: '100%', alignItems: 'center'}}
+                       onChange={handleChange("email")}></input>
 
-                    <li id="profileUrl">
-                        <p style={{margin: 0}}>Profile Url</p>
-                        <div>
-                            <img className="avatar"
-                                 src = {profileUrl}
-                                 style={{width: '40px', borderRadius: '50%'}}
-                            />
-                            <input id="file-upload" className="custom-file-upload" placeholder="Choose New Image" type="file" name="image" accept="image/*" id="cloudinary" onChange={handleChange("profileUrl")}/>
-                        </div>
-                    </li>
+                <p style={{margin: 0}}>Password</p>
+                <input type="text"
+                       id="iPw"
+                       name="pw"
+                       value = {pw}
+                       style={{width: '100%', alignItems: 'center'}}
+                       onChange={handleChange("pw")}></input>
 
-                    <li>
-                        {error ? <label style = {{color: 'red'}}>{error}</label> : <></>}
-                    </li>
-                    <li>
-                        <button onClick={testRegister} type="submit" style={{width: '30%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'green',color: '#ffffff'}}>Save</button>
-                    </li>
-                </form>
-            </div>
+                <p style={{margin: 0}}>Address 1</p>
+                <input type="text"
+                       id="iAddr1"
+                       name="addr1"
+                       value = {addr1}
+                       style={{width: '100%', alignItems: 'center'}}
+                       onChange={handleChange("addr1")}></input>
+
+                <p style={{margin: 0}}>Address 2</p>
+                <input type="text"
+                       id="iAddr2"
+                       name="addr2"
+                       value = {addr2}
+                       style={{width: '100%', alignItems: 'center'}}
+                       onChange={handleChange("addr2")}></input>
+
+                <p style={{margin: 0}}>Profile Url</p>
+                <div>
+                    <img className="avatar"
+                         src = {profileUrl}
+                         style={{width: '40px', borderRadius: '50%'}}
+                    />
+                    <input id="file-upload" className="custom-file-upload" placeholder="Choose New Image" type="file" name="image" accept="image/*" id="cloudinary" onChange={handleChange("profileUrl")}/>
+                </div>
+
+                <h3 style = {{color: 'red'}}>{error? error: " "}</h3>
+
+                <div className="SubmitButton" style={{margin: 0}}>
+                    <button onClick={testRegister} type="submit" >Save</button>
+                </div>
+
+            </form>
         </div>
     )
 };

@@ -15,12 +15,20 @@ function EditQuestions(props){
             </div>
             {questions? questions.map((question)=>
                 <li className="QuestionList" style={{listStyle: "none",padding: "5px"}}>
-                    <Question qText = {question.qText}
-                              qType = {question.qType}
-                              qDate = {question.qDate}
-                              qChoices = {question.qChoices}
-                              editMode = {true}
+                    <Question
+                        type = {question.type}
+                        header = {question.header}
+                        answer = {question.answer}
+                        mdate = {question.mdate}
+                        // date = {currDate}
+                        editMode = {true}
                     />
+                    {/*<Question qText = {question.qText}*/}
+                    {/*          qType = {question.qType}*/}
+                    {/*          qDate = {question.qDate}*/}
+                    {/*          qChoices = {question.qChoices}*/}
+                    {/*          editMode = {true}*/}
+                    {/*/>*/}
                 </li>
             ):<></>}
             <div className="SubmitButton">

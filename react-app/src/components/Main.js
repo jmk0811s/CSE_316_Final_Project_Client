@@ -16,11 +16,11 @@ import {
 } from "../api/client.js";
 
 function Main(props) {
-    const [currUser, setCurrUser] = useState({});
-    const [defaultImg, setDefaultImg] = useState(true);
-    const [imgURL, setImgURL] = useState('');
+    const [currUser, setCurrUser] = useState(props.currUser);
+    const [imgURL, setImgURL] = useState();
     const [daylogs, setDaylogs] = useState([]);
     const [currentPage, setCurrentPage] = useState('LogData');
+    const [currDate, setCurrentDate] = useState();
 
     //get current user
     useEffect(() => {
@@ -37,11 +37,10 @@ function Main(props) {
 
             //get profile image url of current user
             if (currUser.hasOwnProperty('profile_url') && currUser.profile_url !== '') {
-                setDefaultImg(true);
-                setImgURL('');
-            } else {
-                setDefaultImg(false);
                 setImgURL(currUser.profile_url);
+            } else {
+                setImgURL('');
+
             }
         }
     }, [currUser]);
@@ -75,7 +74,7 @@ function Main(props) {
                 </button>
 
                 <button className={"ProfileImg"} onClick={() => setCurrentPage("Profile")} >
-                    <img src= {'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
+                    <img src= {imgURL? imgURL:'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
                 </button>
 
             </div>
@@ -90,7 +89,9 @@ function Main(props) {
                         ></EditQuestions> :
                         currentPage == 'Profile'?
                             <Profile
+                                setCurrUser = {props.setCurrUser}
                                 currUser={props.currUser}
+                                setLogin={props.setLogin}
                             ></Profile> :
                             currentPage == 'ViewData' ?
                                 <ViewData

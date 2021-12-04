@@ -84,7 +84,7 @@ button:hover {
   margin-left: auto;
   margin-right: auto;
 }
-.SubmitButton button{
+.Save, .SubmitButton button{
   background-color: var(--actionBackgroundColor);
   border-radius: 10px;
   width: 80px;
@@ -92,14 +92,9 @@ button:hover {
   border: none;
   color: #eaf6f6;
 }
-.Save{
-  background-color: var(--actionBackgroundColor);
-  border-radius: 10px;
-  width: 80px;
-  height: 50px;
-  border: none;
-  color: #eaf6f6;
-}
+
+
+
 
 .ProfileImg {
   border: none;
@@ -129,11 +124,13 @@ button:hover {
 }
 
 .ChooseImg{
+  display: inline-block;
   background-color: var(--activeColor);
   border-radius: 7px;
   width: 140px;
   height: 35px;
   border: none;
+  cursor: pointer;
 }
 .ProfileTabs input{
   border: 1px solid darkgray;
@@ -148,6 +145,76 @@ button:hover {
   margin-left: auto;
   margin-right: auto;
 }
+
+.CreateAccount{
+  width: 30%;
+  height: 35px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--activeColor);
+  color: var(--actionTextColor);
+}
+
+.LoginButton{
+  width: 100%;
+  height: 35px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--actionBackgroundColor);
+  color: var(--actionTextColor);
+}
+
+.LoginForm {
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.LoginForm p{
+  text-align: left;
+  margin: 0;
+}
+.LoginForm input{
+  box-sizing: border-box;
+  padding: 5px;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.LoginPage {
+  display: flex;
+  flex-direction: column;
+  line-height: 30px;
+  z-index: 0;
+
+}
+.SignUp{
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  padding-top: 10vh;
+  background-color: rgba(0,0,0,0.4);
+
+}
+
+.SignUpContents{
+
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #fcfefe;
+}
+
+.SignUp input{
+  box-sizing: border-box;
+  padding: 5px;
+  width: 100%;
+  border-radius: 10px;
+}
+
 
 @media all and (max-width: 600px) {
   .Header{

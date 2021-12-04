@@ -18,11 +18,16 @@ function App() {
                 setCurrUser(user);
             }
             else {
+                console.log("currUser Null?")
                 setLogin(false);
                 setCurrUser({});
             }
         });
-    }, [])
+    }, [login])
+
+    useEffect(()=>{
+        setCurrUser(currUser);
+    }, [currUser])
 
   return (
       <div className="App">

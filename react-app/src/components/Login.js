@@ -34,7 +34,7 @@ function Login(props){
     }
 
     return (
-        <div className='loginPage'>
+        <div className='LoginPage'>
             <h1 style={{textAlign: 'center'}}>
                 Day Logger
             </h1>
@@ -42,38 +42,33 @@ function Login(props){
                 Organize your daily records in one place.
             </h2>
 
-            <div className='login-content'>
-                <form style = {{textAlign: 'center'}}>
-                    <li id="email">
-                        <p style={{margin: 0, textAlign: 'left'}}>Email</p>
-                        <input type="text"
-                               id="Email"
-                               name="Email"
-                               value = {email}
-                               style={{width: '100%' ,height: '20px', alignItems: 'center'}}
-                               onChange={(e) => setEmail(e.target.value)}></input>
-                    </li>
-                    <li id="password">
-                        <p style={{margin: 0, textAlign: 'left'}}>Password</p>
-                        <input type="text"
-                               id="Password"
-                               name="Password"
-                               value = {password}
-                               style={{width: '100%', height: '20px'}}
-                               onChange={(e) => setPassword(e.target.value)}></input>
-                    </li>
-                    <li>
-                        {error ? <label style = {{color: 'red'}}>{error}</label>:<></>}
-                    </li>
-                    <li>
-                        <button onClick={login} type="submit" style={{alignItems: 'center', width: '100%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'rgb(58, 99, 197)',color: '#ffffff'}}>Log in</button>
-                    </li>
-                    <hr></hr>
+            <div className="Login">
+                <form className='LoginForm' style = {{textAlign: 'center'}}>
+                    <p>Email</p>
+                    <input type="text"
+                           id="Email"
+                           name="Email"
+                           value = {email}
+                           onChange={(e) => setEmail(e.target.value)}></input>
+                    <p>Password</p>
+                    <input type="text"
+                           id="Password"
+                           name="Password"
+                           value = {password}
+                           onChange={(e) => setPassword(e.target.value)}></input>
+
+                    <div>
+                        <h3 style = {{color: 'red'}}>{error? error: " "}</h3>
+                    </div>
+
+                    <button onClick={login} type="submit" className="LoginButton">Log in</button>
 
                 </form>
-                <li style ={{paddingTop:20, textAlign: 'center'}}>
-                    <button onClick={() => setShowSignup(true)} style={{alignItems: 'center', width: '30%', height: '35px',border: 'none', borderRadius: '10px' ,backgroundColor: 'green',color: '#ffffff'}}>Create New Account</button>
-                </li>
+
+            </div>
+            <hr style={{width: "100%"}}></hr>
+            <div style={{textAlign: "center"}}>
+                <button onClick={() => setShowSignup(true)} className="CreateAccount">Create New Account</button>
             </div>
             {showSignup ?
                 <SignUp
@@ -83,6 +78,8 @@ function Login(props){
                 ></SignUp>
                 : null
             }
+
+
         </div>
 
     );

@@ -19,6 +19,7 @@ function Profile(props) {
         let currUser = props.currUser;
         setName(currUser.name);
         setEmail(currUser.email);
+
         setAddr1(currUser.address1);
         setAddr2(currUser.address2);
         setProfileUrl(currUser.profile_url)

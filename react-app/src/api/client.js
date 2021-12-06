@@ -85,58 +85,6 @@ export const uploadImageToCloudinaryAPIMethod = (formData) => {
 ////////////////////////////////////////////////////////////////////////////////
 
 /*
- * Daylog
- */
-
-//get daylogs
-export const getDaylogsAPIMethod = () => {
-    return fetch(`/api/daylogs`, {
-        ...defaultHeaders,
-    }).then(checkStatus)
-        .then(parseJSON);
-}
-
-//get daylog by id
-export const getDaylogByIdAPIMethod = (daylogId) => {
-    return fetch(`/api/daylogs/${daylogId}`, {
-        ...defaultHeaders,
-    }).then(checkStatus)
-        .then(parseJSON);
-}
-
-//get daylog by date @
-
-//add daylog
-export const createDaylogAPIMethod = (daylog) => {
-    return fetch(`/api/daylogs`, {
-        ...defaultHeaders,
-        method: 'POST',
-        body: JSON.stringify(daylog),
-    }).then(checkStatus)
-        .then(parseJSON);
-}
-
-//update daylog
-export const updateDaylogAPIMethod = (daylog) => {
-    return fetch(`/api/daylogs/${daylog._id}`, {
-        ...defaultHeaders,
-        method: 'PUT',
-        body: JSON.stringify(daylog),
-    }).then(checkStatus);
-}
-
-//delete daylog
-export const deleteDaylogByIdAPIMethod = (daylogId) => {
-    return fetch(`/api/daylogs/${daylogId}`, {
-        ...defaultHeaders,
-        method: 'DELETE',
-    }).then(checkStatus)
-        .then(parseJSON);
-}
-
-////////////////////////////////////////////////////////////////////////////////
-
-/*
  * Question
  */
 
@@ -148,22 +96,21 @@ export const getQuestionsAPIMethod = () => {
         .then(parseJSON);
 }
 
-export const getQuestionsByDaylogIdAPIMethod = (daylogId) => {
-    return fetch(`/api/questions/findByDaylog/${daylogId}`, {
-        ...defaultHeaders,
-    }).then(checkStatus)
-        .then(parseJSON);
-}
-
 //get question by id
-export const getQuestionByIdAPIMethod = (questionId) => {
+export const getQuestionsByIdAPIMethod = (questionId) => {
     return fetch(`/api/questions/${questionId}`, {
         ...defaultHeaders,
     }).then(checkStatus)
         .then(parseJSON);
 }
 
-//get question by date @
+//get questions by type
+export const getQuestionsByTypeAPIMethod = (questionType) => {
+    return fetch(`/api/questions/${questionType}`, {
+        ...defaultHeaders,
+    }).then(checkStatus)
+        .then(parseJSON);
+}
 
 //add question
 export const createQuestionAPIMethod = (question) => {
@@ -177,7 +124,7 @@ export const createQuestionAPIMethod = (question) => {
 
 //update question
 export const updateQuestionAPIMethod = (question) => {
-    return fetch(`/api/daylogs/${question._id}`, {
+    return fetch(`/api/questions/${question._id}`, {
         ...defaultHeaders,
         method: 'PUT',
         body: JSON.stringify(question),
@@ -187,6 +134,58 @@ export const updateQuestionAPIMethod = (question) => {
 //delete question
 export const deleteQuestionByIdAPIMethod = (questionId) => {
     return fetch(`/api/questions/${questionId}`, {
+        ...defaultHeaders,
+        method: 'DELETE',
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+/*
+ * Response
+ */
+
+//get responses
+export const getResponsesAPIMethod = () => {
+    return fetch(`/api/responses`, {
+        ...defaultHeaders,
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+//get response by id
+export const getResponseByIdAPIMethod = (responseId) => {
+    return fetch(`/api/responses/${responseId}`, {
+        ...defaultHeaders,
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+//get responses by date @
+
+//add response
+export const createResponseAPIMethod = (response) => {
+    return fetch(`/api/responses`, {
+        ...defaultHeaders,
+        method: 'POST',
+        body: JSON.stringify(response),
+    }).then(checkStatus)
+        .then(parseJSON);
+}
+
+//update question
+export const updateResponseAPIMethod = (response) => {
+    return fetch(`/api/responses/${response._id}`, {
+        ...defaultHeaders,
+        method: 'PUT',
+        body: JSON.stringify(response),
+    }).then(checkStatus);
+}
+
+//delete question
+export const deleteResponseByIdAPIMethod = (responseId) => {
+    return fetch(`/api/responses/${responseId}`, {
         ...defaultHeaders,
         method: 'DELETE',
     }).then(checkStatus)

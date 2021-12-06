@@ -1,73 +1,137 @@
 import React, {useState, useEffect} from 'react'
 
-function Question(props){
-    const [questionType, setQuestionType] =useState();
-    const [questionHeader, setQuestionHeader] =useState();
-    const [questionAnswer, setQuestionAnswer] =useState();
-    const [questionMDate, setQuestionMDate] =useState();
-    const [questionDate, setQuestionDate] =useState();
+function Question(props) {
     const [editMode, setEditMode] = useState(props.editMode);
-    const [multipleChoices, setMultipleChoices] = useState(props.qChoices);
+    const [type, setType] = useState(props.type);
+    const [header, setHeader] = useState(props.header);
+    const [mdate, setMDate] = useState(props.mdate);
+    const [nanoid, setNanoid] = useState(props.nanoid);
+    const [questions, setQuestions] = useState(props.questions);
+    const [responses, setResponses] = useState(props.responses);
+    const [index, setIndex] = useState(props.index);
 
     useEffect(() => {
-        setQuestionType(props.type);
-        setQuestionHeader(props.header);
-        setQuestionAnswer(props.answer);
-        setQuestionMDate(props.mdate);
-        setQuestionDate(props.date);
         setEditMode(props.editMode);
-        //console.log("Type: " + questionType);
-        //console.log("Header: " + questionHeader);
+        setType(props.type);
+        setHeader(props.header);
+        setMDate(props.mdate);
+        setNanoid(props.nanoid);
+        setQuestions(props.questions);
+        setResponses(props.responses);
+        setIndex(props.index);
     }, [props]);
 
-    const handleSelect = (prop)=> (e) => {
-        if(prop == "qType"){
-            setQuestionType(e.target.value)
+    useEffect(() => {
+        //console.log(responses);
+    }, [props.responses]);
+
+    const handleChange = (e) => {
+        let newQuestions = [];
+        for (let i = 0; i < questions.length; i++) {
+            if (questions[i].nanoid === nanoid) {
+                let newQuestion = {
+                    type: type,
+                    header: e.target.value,
+                    mdate: mdate,
+                    nanoid: nanoid,
+                    status: questions[i].status
+                }
+                console.log(newQuestion);
+                newQuestions.push(newQuestion);
+            }
+            else {
+                newQuestions.push(questions[i]);
+            }
         }
-        else if(prop == "qText"){
-            setQuestionHeader(e.target.value)
-        }
+        props.setQuestions(newQuestions);
+        console.log("updated@");
+    }
+
+    const addChoice = () => {
 
     }
 
     return (
         editMode ?
-            //edit mode
-            <div className="Question">
-
-            </div>
-            :
-            //read-only mode
+            //Edit mode
             <div className="Question">
                 <div className="question-header">
-                    {questionHeader}
+                    <input // question header
+                        type="text"
+                        name="header"
+                        value={header}
+                        placeholder={"Header"}
+                        onChange={(e) => {setHeader(e.target.value);handleChange(e);}}/>
                 </div>
+                <select // dropdown question type selection menu
+                    value={type}
+                    onChange={(e) => {setType(e.target.value);handleChange(e);}}
+                    className="dropdown">
+                    <option value="Text">Text</option>
+                    <option value="Number">Number</option>
+                    <option value="Boolean">Boolean</option>
+                    <option value="MultipleChoice">Multiple Choice</option>
+                </select>
                 {
-                    questionType == "Text" ?
-                        //Text type
-                        <div className="question-answer">
-                            {questionAnswer.text}
+                    type === 'MultipleChoice' ?
+                        <div className="wrapper">
+                            <label><input type="radio" name="radio" value="true" checked={false}/>test</label>
+                            <button onClick={addChoice} style={{background: "transparent", border: "none"}}>
+                                <span  className="material-icons">add_circle_outline</span>
+                            </button>
                         </div>
                         :
-                        questionType == "Number" ?
+                        null
+                }
+                <button onClick={() => props.deleteQuestion(nanoid)} style={{background: "transparent", border: "none"}}>
+                    <span  className="material-icons">delete_outline</span>
+                </button>
+            </div>
+            :
+            <div></div>
+        /*
+            // Read mode
+            <div className="Question">
+                <div className="question-header">
+                    <input
+                        type="text"
+                        name="header"
+                        value={header}
+                        placeholder={"Header"}
+                        onChange={(e) => setHeader(e.target.value)}/>
+                </div>
+                {
+                    type == "Text" ?
+                        //Text type
+                        <div className="question-answer">
+                            <input
+                                type="text"
+                                name="answer"
+                                value={responses.filter((res) => res.question === nanoid)}
+                                placeholder={"Answer"}
+                                onChange={(e) => setAnswerText(e.target.value)}/>
+                        </div>
+                        :
+                        type == "Number" ?
                             //Number type
                             <div className="question-answer">
                                 <input
                                     type="text"
-                                    value={questionAnswer.number}
-                                ></input>
+                                    name="answer"
+                                    value={answerNumber}
+                                    onChange={(e) => setAnswerNumber(e.target.value)}/>
                             </div>
                             :
-                            questionType == "Boolean" ?
+                            type == "Boolean" ?
                                 //Boolean type
                                 <div className="question-answer">
                                     <div className="radio-wrapper">
-                                        <label><input type="radio" name="radio" value="true" checked={questionAnswer.boolean}/>true</label>
-                                        <label><input type="radio" name="radio" value="false" checked={!questionAnswer.boolean}/>false</label>
+                                        <label><input type="radio" name="radio" value="true" checked={answerBoolean}/>true</label>
+                                        <label><input type="radio" name="radio" value="false" checked={!answerBoolean}/>false</label>
                                     </div>
                                 </div>
                                 :
-                                questionType == "MultipleChoice" ?
+                                type == "MultipleChoice" ?
                                     //MultipleChoice type
                                     <div className="question-answer">
                                         <div className="radio-wrapper">
@@ -78,63 +142,6 @@ function Question(props){
                                     null
                 }
             </div>
-
-
-
-        /*
-        (editMode?
-            (<div className="Question">
-                <form>
-                    <input type="text"
-                           value={questionHeader}
-                           onChange={handleSelect("qText")}></input>
-                </form>
-                <div style={{display: "flex",justifyContent: "space-between"}}>
-                    <select onChange={handleSelect("qType")} value={questionType}>
-                        <option value="number">number</option>
-                        <option value="boolean">boolean</option>
-                        <option value="text">text</option>
-                        <option value="multiple">multiple choice</option>
-                        {}
-                    </select>
-
-                    <button style={{background:"transparent", border: "none"}}>
-                        <span className="material-icons">delete_outline</span>
-                    </button>
-                </div>
-            </div>):
-            (<div className="Question">
-                {questionHeader}
-                <div></div>
-                {questionType === 'number'?
-                    <form>
-                        <input type ='number'></input>
-                    </form> :
-                    questionType === 'boolean'?
-                        <form>
-                            <input type="radio" id="true"
-                                    name="tfRadio"></input>
-                            <label for="true">True</label>
-                            <input type="radio" id="false"
-                                    name="tfRadio" value="False"></input>
-                            <label for="false">False</label>
-                        </form> :
-                        questionType === 'text'?
-                            <form>
-                                <input type = 'text'></input>
-                            </form> :
-                            <form>
-                                {multipleChoices? multipleChoices.map((choice)=>
-                                    <React.Fragment>
-                                        <input type="radio" id="multipleChoices" name="mcRadio"></input>
-                                        <label htmlFor="multipleChoices">{choice}</label>
-                                    </React.Fragment>
-                                ):<></>}
-                            </form>
-                }
-            </div>)
-        )
-
 
          */
     );

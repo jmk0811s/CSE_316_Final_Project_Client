@@ -1,38 +1,112 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Question from "./Question";
-function EditQuestions(props){
+import {nanoid} from 'nanoid'
+import {sortByDate} from "../utils/HelperFunctions";
+import {
+    createQuestionAPIMethod,
+    deleteQuestionByIdAPIMethod,
+    getQuestionsAPIMethod,
+    updateQuestionAPIMethod
+} from "../api/client";
 
-    //questions를 받아올지 log days를 받아올지?
-    const [questions, setQuestions] = useState(props.questions)
+function EditQuestions(props){
+    const [questions, setQuestions] = useState(props.questions);
+
+    useEffect(() => {
+        setQuestions(props.questions);
+    }, [props.questions]);
+
+    const handleSave = () => {
+        getQuestionsAPIMethod().then((dbQuestions) => {
+            console.log(questions);
+            for (let i = 0; i < questions.length; i++) {
+                if (questions[i].status === 'ADDED') {
+                    console.log("added");
+                    questions[i].status = '';
+                    createQuestionAPIMethod(questions[i]);
+                }
+                for (let j = 0; j < dbQuestions.length; j++) {
+                    if (dbQuestions[j].nanoid === questions[i].nanoid) {
+                        if (questions[i].status === 'DELETED' && dbQuestions[j]._id !== undefined) {
+                            console.log("deleted");
+                            deleteQuestionByIdAPIMethod(dbQuestions[j]._id);
+                        }
+                        else {
+                            console.log("updated");
+                            let newQuestion = {
+                                _id: dbQuestions[j]._id,
+                                type: questions[i].type,
+                                header: questions[i].header,
+                                mdate: questions[i].mdate,
+                                nanoid: questions[i].nanoid,
+                                creator: questions[i].creator
+                            }
+                            updateQuestionAPIMethod(newQuestion);
+                        }
+                    }
+                }
+            }
+        });
+        let newQuestions = questions.filter((question) => question.status !== 'DELETED');
+        props.setQuestions(sortByDate(newQuestions));
+    }
+
+    const addQuestion = () => {
+        let id = nanoid();
+        let newQuestion = {
+            type: 'Text',
+            header: '',
+            mdate: new Date(),
+            nanoid: id,
+            status: 'ADDED'
+        }
+        let newQuestions = [...questions];
+        newQuestions.push(newQuestion);
+        setQuestions(newQuestions);
+        //console.log("added: " + id);
+    }
+
+    const deleteQuestion = (nanoid) => {
+        let newQuestions = [...questions];
+        for (let i = 0; i < newQuestions.length; i++) {
+            if (newQuestions[i].nanoid === nanoid) {
+                newQuestions[i].status = 'DELETED';
+                //console.log("deleted: " + nanoid);
+            }
+        }
+        setQuestions(newQuestions);
+    }
 
     return (
-        <div className="EditQ">
+        <div className="EditQuestions">
             <div style={{width: "80%",margin: "auto",display: "flex", justifyContent: "space-between"}}>
                 <h3>Edit Questions</h3>
-                <button style={{background: "transparent", border: "none"}}>
-                    <span  className="material-icons">add_circle</span>
+                <button onClick={addQuestion} style={{background: "transparent", border: "none"}}>
+                    <span  className="material-icons">add_circle_outline</span>
                 </button>
             </div>
-            {questions? questions.map((question)=>
-                <li className="QuestionList" style={{listStyle: "none",padding: "5px"}}>
-                    <Question
-                        type = {question.type}
-                        header = {question.header}
-                        answer = {question.answer}
-                        mdate = {question.mdate}
-                        // date = {currDate}
-                        editMode = {true}
-                    />
-                    {/*<Question qText = {question.qText}*/}
-                    {/*          qType = {question.qType}*/}
-                    {/*          qDate = {question.qDate}*/}
-                    {/*          qChoices = {question.qChoices}*/}
-                    {/*          editMode = {true}*/}
-                    {/*/>*/}
-                </li>
-            ):<></>}
+            {
+                questions ?
+                    questions.filter((question) => question.status !== 'DELETED').map((question) => {
+                        return (
+                            <li className="QuestionList" style={{listStyle: "none", padding: "5px"}}>
+                                <Question
+                                    editMode={true}
+                                    type={question.type}
+                                    header={question.header}
+                                    mdate={question.mdate}
+                                    nanoid={question.nanoid}
+                                    questions={questions}
+                                    setQuestions={setQuestions}
+                                    responses={props.responses.filter((res) => res.question === question._id)}
+                                    deleteQuestion={deleteQuestion}
+                                />
+                            </li>
+                        )})
+                    : <></>
+            }
             <div className="SubmitButton">
-                <button>Save</button>
+                <button onClick={handleSave}>Save</button>
             </div>
         </div>
     );

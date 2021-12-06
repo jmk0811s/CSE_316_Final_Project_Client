@@ -8,16 +8,19 @@ import {
     getQuestionsByDaylogIdAPIMethod
 } from "../api/client";
 
-function Daylog(props){
+function Daylog(props) {
+    const [editMode, setEditMode] = useState(false);
     const [daylogs, setDaylogs] = useState([]);
     const [currDaylog, setCurrDaylog] = useState({});
     const [currQuestions, setCurrQuestions] = useState([]);
     const [currDate, setCurrDate] = useState();
     const [currDaylogIndex, setCurrDayLogIndex] = useState();
 
+    //Initialize states
     useEffect(() => {
         setDaylogs(props.daylogs);
-    }, [props.daylogs]);
+        setEditMode(props.editMode);
+    }, [props]);
 
     useEffect(() => {
         if (daylogs != undefined && daylogs.length != 0) {
@@ -41,16 +44,12 @@ function Daylog(props){
             });
         }
     }
-    const next = () =>{
-        if(currDaylogIndex-1 >= 0) {
-            setCurrDaylog(daylogs[currDaylogIndex-1]);
-            setCurrDate(dateToString(new Date(daylogs[currDaylogIndex -1].date)));
 
-            getQuestionsByDaylogIdAPIMethod(daylogs[currDaylogIndex-1]._id).then((questions) => {
-                setCurrQuestions(sortQuestionsByDate(questions));
-                setCurrDayLogIndex(currDaylogIndex-1);
-            });
-        }
+    const next = () => {
+
+    }
+
+    const prev = () => {
 
     }
 
@@ -61,19 +60,7 @@ function Daylog(props){
     const sortQuestionsByDate = (list) => {
         return list.sort((a, b) => new Date(a.mdate) - new Date(b.mdate));
     }
-    const test2 = () => {
-        // let nDayLog = {
-        //     date: new Date("2019-10-15"),
-        //     creator: "61a8ec72b1b3f8f9fb27f94f"
-        // }
-        // createDaylogAPIMethod(nDayLog).then(()=>{
-        //
-        // })
-        getQuestionsByDaylogIdAPIMethod("61a8ec72b1b3f8f9fb27f94f").then((questions)=>{
-            console.log(questions);
-        })
-        console.log(daylogs)
-    }
+
     const populateQuestions = () => {
         let questions = [
             {
@@ -126,7 +113,7 @@ function Daylog(props){
         currDate? (
                 <div>
                     <div className="LogSelectionBar" style={{display: "flex", justifyContent: "space-between"}}>
-                        <button onClick={previous}>
+                        <button onClick={prev}>
                             <h2>{"<"}</h2>
                         </button>
                         <h2>
@@ -162,11 +149,6 @@ function Daylog(props){
                     <button onClick={populateQuestions}>
                         test
                     </button>
-                    <button onClick={test2}>
-                        test2
-                    </button>
-
-
                 </div>):
                 <></>
     );

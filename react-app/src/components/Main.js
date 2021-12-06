@@ -1,38 +1,36 @@
 import React, {useState, useEffect} from 'react'
 import Profile from "./Profile";
 import EditQuestions from "./EditQuestions";
-import Daylog from "./Daylog";
+import LogDay from "./LogDay";
 import ViewData from "./ViewData";
+import {sortByDate} from "../utils/HelperFunctions";
 
 //import API methods
 import {
-    createDaylogAPIMethod,
-    getCurrentUserAPIMethod,
-    getDaylogsAPIMethod,
-    getQuestionsByDaylogIdAPIMethod,
-    createQuestionAPIMethod,
-    loginUserAPIMethod,
-    logoutUserAPIMethod
+    logoutUserAPIMethod,
+    getQuestionsAPIMethod,
+    getResponsesAPIMethod
 } from "../api/client.js";
 
 function Main(props) {
+    const [serverCall, setServerCall] = useState(false);
     const [currUser, setCurrUser] = useState(props.currUser);
     const [imgURL, setImgURL] = useState();
-    const [daylogs, setDaylogs] = useState([]);
-    const [currentPage, setCurrentPage] = useState('LogData');
-    const [currDate, setCurrentDate] = useState();
+    const [questions, setQuestions] = useState([]);
+    const [responses, setResponses] = useState([]);
+    const [currentPage, setCurrentPage] = useState('LogDay');
 
-    //get current user
-    useEffect(() => {
-        setCurrUser(props.currUser);
-    }, [props.currUser]);
-
+    //user data initialization
     useEffect(() => {
         if (currUser !== null && currUser !== undefined) {
-            //get daylogs of current user
-            getDaylogsAPIMethod().then((daylogs) => {
-                setDaylogs(sortDaylogsByDate(daylogs));
-                //console.log(daylogs);
+            //get questions of current user
+            getQuestionsAPIMethod().then((questions) => {
+                setQuestions(sortByDate(questions));
+            });
+
+            //get responses of current user
+            getResponsesAPIMethod().then((responses) => {
+                setResponses(responses);
             });
 
             //get profile image url of current user
@@ -40,15 +38,17 @@ function Main(props) {
                 setImgURL(currUser.profile_url);
             } else {
                 setImgURL('');
-
             }
         }
-    }, [currUser]);
+    }, [currUser, serverCall]);
 
-
-    const sortDaylogsByDate = (list) => {
-        return list.sort((a, b) => new Date(a.date) - new Date(b.date));
-    }
+    /*
+    useEffect(() => {
+        getQuestionsAPIMethod().then((questions) => {
+            setQuestions(questions);
+        });
+    }, [serverCall]);
+     */
 
     const logout = () => {
         logoutUserAPIMethod().then(() => {
@@ -64,7 +64,7 @@ function Main(props) {
                 <h2 className="Header">Day Logger</h2>
 
                 <div className= "Menus" style={{display: 'flex'}}>
-                    <button onClick={() => setCurrentPage("LogData")}>Log Data</button>
+                    <button onClick={() => setCurrentPage("LogDay")}>Log Day</button>
                     <button onClick={() => setCurrentPage("EditQuestions")}>Edit Questions</button>
                     <button onClick={() => setCurrentPage("ViewData")}>View Data</button>
                 </div>
@@ -79,13 +79,23 @@ function Main(props) {
 
             </div>
             {
-                currentPage == 'LogData' ?
-                    <Daylog
-                        daylogs={daylogs}
-                    ></Daylog> :
+                currentPage == 'LogDay' ?
+                    <LogDay
+                        questions={questions}
+                        setQuestions={setQuestions}
+                        responses={responses}
+                        setResponses={setResponses}
+                        serverCall={serverCall}
+                        setServerCall={setServerCall}
+                    ></LogDay> :
                     currentPage == 'EditQuestions'?
                         <EditQuestions
-
+                            questions={questions}
+                            setQuestions={setQuestions}
+                            responses={responses}
+                            setResponses={setResponses}
+                            serverCall={serverCall}
+                            setServerCall={setServerCall}
                         ></EditQuestions> :
                         currentPage == 'Profile'?
                             <Profile

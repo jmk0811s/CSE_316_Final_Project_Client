@@ -8,11 +8,11 @@ import {getCurrentUserAPIMethod} from './api/client.js';
 
 function App() {
     const [login, setLogin] = useState(false);
-    const [currUser, setCurrUser] = useState();
+    const [currUser, setCurrUser] = useState({});
 
     useEffect(() =>{
         getCurrentUserAPIMethod().then((user) => {
-            console.log(user);
+            //console.log(user);
             if (user != null && Object.keys(user).length != 0) {
                 setLogin(true);
                 setCurrUser(user);
@@ -24,10 +24,6 @@ function App() {
             }
         });
     }, [login])
-
-    useEffect(()=>{
-        setCurrUser(currUser);
-    }, [currUser])
 
   return (
       <div className="App">

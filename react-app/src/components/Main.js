@@ -33,14 +33,22 @@ function Main(props) {
                 setResponses(responses);
             });
 
+            console.log(currUser)
             //get profile image url of current user
             if (currUser.hasOwnProperty('profile_url') && currUser.profile_url !== '') {
                 setImgURL(currUser.profile_url);
+                console.log('success')
+
             } else {
                 setImgURL('');
+                console.log('fail')
             }
         }
     }, [currUser, serverCall]);
+
+    useEffect(()=>{
+        setCurrUser(props.currUser)
+    }, [props])
 
     /*
     useEffect(() => {

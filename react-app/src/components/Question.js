@@ -25,13 +25,13 @@ function Question(props) {
         //console.log(responses);
     }, [props.responses]);
 
-    const handleChange = (e) => {
+    const handleChange = (newValue, field) => {
         let newQuestions = [];
         for (let i = 0; i < questions.length; i++) {
             if (questions[i].nanoid === nanoid) {
                 let newQuestion = {
-                    type: type,
-                    header: e.target.value,
+                    type: field === 'type' ? newValue : type,
+                    header: field === 'header' ? newValue : header,
                     mdate: mdate,
                     nanoid: nanoid,
                     status: questions[i].status
@@ -61,11 +61,11 @@ function Question(props) {
                         name="header"
                         value={header}
                         placeholder={"Header"}
-                        onChange={(e) => {setHeader(e.target.value);handleChange(e);}}/>
+                        onChange={(e) => {setHeader(e.target.value);handleChange(e.target.value, 'header');}}/>
                 </div>
                 <select // dropdown question type selection menu
                     value={type}
-                    onChange={(e) => {setType(e.target.value);handleChange(e);}}
+                    onChange={(e) => {setType(e.target.value);handleChange(e.target.value, 'type');}}
                     className="dropdown">
                     <option value="Text">Text</option>
                     <option value="Number">Number</option>

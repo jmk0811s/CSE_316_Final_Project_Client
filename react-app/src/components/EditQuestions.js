@@ -16,7 +16,7 @@ function EditQuestions(props){
         setQuestions(props.questions);
     }, [props.questions]);
 
-    const handleSave = () => {
+    const handleSubmit = () => {
         getQuestionsAPIMethod().then((dbQuestions) => {
             console.log(questions);
             for (let i = 0; i < questions.length; i++) {
@@ -37,6 +37,7 @@ function EditQuestions(props){
                                 _id: dbQuestions[j]._id,
                                 type: questions[i].type,
                                 header: questions[i].header,
+                                choices: questions[i].choices,
                                 mdate: questions[i].mdate,
                                 nanoid: questions[i].nanoid,
                                 creator: questions[i].creator
@@ -56,6 +57,7 @@ function EditQuestions(props){
         let newQuestion = {
             type: 'Text',
             header: '',
+            choices: [],
             mdate: new Date(),
             nanoid: id,
             status: 'ADDED'
@@ -87,26 +89,26 @@ function EditQuestions(props){
             </div>
             {
                 questions ?
-                    questions.filter((question) => question.status !== 'DELETED').map((question) => {
-                        return (
-                            <li className="QuestionList" style={{listStyle: "none", padding: "5px"}}>
-                                <Question
-                                    editMode={true}
-                                    type={question.type}
-                                    header={question.header}
-                                    mdate={question.mdate}
-                                    nanoid={question.nanoid}
-                                    questions={questions}
-                                    setQuestions={setQuestions}
-                                    responses={props.responses.filter((res) => res.question === question._id)}
-                                    deleteQuestion={deleteQuestion}
-                                />
-                            </li>
-                        )})
+                    questions.filter((question) => question.status !== 'DELETED').map((question) =>
+                        <li className="QuestionList" style={{listStyle: "none", padding: "5px"}}>
+                            <Question
+                                editMode={true}
+                                type={question.type}
+                                header={question.header}
+                                choices={question.choices}
+                                mdate={question.mdate}
+                                nanoid={question.nanoid}
+                                questions={questions}
+                                setQuestions={setQuestions}
+                                responses={props.responses.filter((res) => res.question === question._id)}
+                                deleteQuestion={deleteQuestion}
+                            />
+                        </li>
+                    )
                     : <></>
             }
             <div className="SubmitButton">
-                <button onClick={handleSave}>Save</button>
+                <button onClick={handleSubmit}>Save</button>
             </div>
         </div>
     );

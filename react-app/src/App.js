@@ -8,18 +8,16 @@ import {getCurrentUserAPIMethod} from './api/client.js';
 
 function App() {
     const [login, setLogin] = useState(false);
-    const [currUser, setCurrUser] = useState();
+    const [currUser, setCurrUser] = useState({});
 
     useEffect(() =>{
         getCurrentUserAPIMethod().then((user) => {
             console.log(user);
             if (user != null && Object.keys(user).length != 0) {
-                console.log('no touch plz')
                 setLogin(true);
                 setCurrUser(user);
             }
             else {
-                console.log("currUser Null?")
                 setLogin(false);
                 setCurrUser({});
             }

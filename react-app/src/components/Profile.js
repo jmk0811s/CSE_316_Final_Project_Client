@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {
+    getAddressByIdAPIMethod,
     getCurrentUserAPIMethod,
     logoutUserAPIMethod,
     updateUserAPIMethod,
@@ -11,18 +12,23 @@ function Profile(props) {
 
     const [name, setName] = useState(props.currUser.name);
     const [email, setEmail] = useState(props.currUser.email);
-    const [addr1, setAddr1] = useState(props.currUser.address1);
-    const [addr2, setAddr2] = useState(props.currUser.address2);
+    const [addr1, setAddr1] = useState();
+    const [addr2, setAddr2] = useState();
     const [profileUrl, setProfileUrl] = useState(props.currUser.profile_url)
+    const [login, setLogin] = useState();
 
     useEffect(() => {
         let currUser = props.currUser;
-        setName(currUser.name);
-        setEmail(currUser.email);
-
-        setAddr1(currUser.address1);
-        setAddr2(currUser.address2);
-        setProfileUrl(currUser.profile_url)
+        if(currUser._id !== undefined){
+            setName(currUser.name);
+            setEmail(currUser.email);
+            console.log(currUser)
+            getAddressByIdAPIMethod(currUser.address).then((addr)=>{
+                setAddr1(addr.address1);
+                setAddr2(addr.address2);
+            })
+            setProfileUrl(currUser.profile_url)
+        }
     }, [props.currUser])
 
 
@@ -60,6 +66,7 @@ function Profile(props) {
             setProfileUrl("");
         }
         else if (prop === "logout"){
+            setLogin(false);
             logoutUserAPIMethod().then(()=>{
                 props.setLogin(false);
             });

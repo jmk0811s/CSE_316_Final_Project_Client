@@ -84,13 +84,13 @@ export const uploadImageToCloudinaryAPIMethod = (formData) => {
 ////////////////////////////////////////////////////////////////////////////////
 //Address
 export const getAddressByIdAPIMethod = (addressId) => {
-    return fetch(`/api/questions/${addressId}`, {
+    return fetch(`/api/address/${addressId}`, {
         ...defaultHeaders,
     }).then(checkStatus)
         .then(parseJSON);
 }
 export const updateAddressAPIMethod = (address) => {
-    return fetch(`/api/questions/${address._id}`, {
+    return fetch(`/api/address/${address._id}`, {
         ...defaultHeaders,
         method: 'PUT',
         body: JSON.stringify(address),

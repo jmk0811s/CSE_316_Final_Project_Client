@@ -107,6 +107,7 @@ function Main(props) {
                         ></EditQuestions> :
                         currentPage == 'Profile'?
                             <Profile
+                                login={props.login}
                                 setCurrUser = {props.setCurrUser}
                                 currUser={props.currUser}
                                 setLogin={props.setLogin}

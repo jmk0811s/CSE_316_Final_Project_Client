@@ -21,7 +21,9 @@ function App() {
             else {
                 console.log("currUser Null?")
                 setLogin(false);
+                console.log(login)
                 setCurrUser({});
+                console.log(currUser)
             }
         });
     }, [login])
@@ -34,6 +36,7 @@ function App() {
       <div className="App">
           {login ?
               <Main
+                  login = {login}
                   setLogin = {setLogin}
                   currUser = {currUser}
                   setCurrUser = {setCurrUser}

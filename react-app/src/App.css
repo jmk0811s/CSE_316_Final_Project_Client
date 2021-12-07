@@ -225,6 +225,13 @@ button:hover {
   border-radius: 5px;
   border: 1px solid darkgray;
 }
+.question-response input{
+  width: 100%;
+  height: 25px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid darkgray;
+}
 
 .Question {
   padding: 15px;

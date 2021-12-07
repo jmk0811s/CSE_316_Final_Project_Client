@@ -196,14 +196,7 @@ function Question(props) {
             :
             // Answer mode
             <div className="Question">
-                <div className="question-header">
-                    <input
-                        type="text"
-                        name="header"
-                        value={header}
-                        placeholder={"Header"}
-                    />
-                </div>
+                <h3 style={{margin:0}}>{header}</h3>
                 {
                     type == "Text" ?
                         //Text type
@@ -252,25 +245,26 @@ function Question(props) {
                                 :
                                 type == "MultipleChoice" ?
                                     //MultipleChoice type
-                                    <div className="radio-wrapper1" style={{margin:"10px"}}>
                                         <div className="radio-wrapper2">
                                             {
                                                 choices.map((choice, i) =>
-                                                    <div className="radio-wrapper3">
-                                                        <label><input
-                                                            type="radio"
-                                                            name={nanoId}
-                                                            value="true"
-                                                            checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.multiple_choice ? currResponse[0].response.multiple_choice[i] : null}
-                                                            onChange={(e) => updateResponse(e.target.value, 'MultipleChoice', i)}
-                                                        />
-                                                            <input type="text" name="text" value={choice} placeholder="new choice"/>
-                                                        </label>
+                                                    <div className="radio-wrapper3" style={{display: 'flex', marginTop: '10px', marginBottom: '10px'}}>
+                                                        {/*<label>*/}
+                                                            <input
+                                                                style={{margin: "0", padding: '0'}}
+                                                                type="radio"
+                                                                name={nanoId}
+                                                                value="true"
+                                                                checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.multiple_choice ? currResponse[0].response.multiple_choice[i] : null}
+                                                                onChange={(e) => updateResponse(e.target.value, 'MultipleChoice', i)}
+                                                            />
+                                                            <p style={{margin: "0", paddingLeft: '10px'}}>{choice}</p>
+                                                            {/*<input type="text" name="text" value={choice} placeholder="new choice"/>*/}
+                                                        {/*</label>*/}
                                                     </div>
                                                 )
                                             }
                                         </div>
-                                    </div>
                                     :
                                     null
                 }

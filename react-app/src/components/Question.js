@@ -177,7 +177,7 @@ function Question(props) {
                         <div className="radio-wrapper1">
                             <label>
                                 <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
-                                <input className="radio-input" style={{border: 'none'}} type="text" name="text" value={choices[0]} placeholder="new choice" onChange={(e) => updateChoice(e, 0)}/>
+                                <input className="radio-input" style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none'}} type="text" name="text" value={choices[0]} placeholder="new choice" onChange={(e) => updateChoice(e, 0)}/>
                             </label>
                             <label>
                                 <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
@@ -202,6 +202,7 @@ function Question(props) {
                         //Text type
                         <div className="question-response">
                             <input
+                                style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none'}}
                                 type="text"
                                 name="answer"
                                 value={currResponse !== undefined && currResponse.length !== 0 ? currResponse[0].response.text : ''}
@@ -214,6 +215,7 @@ function Question(props) {
                             //Number type
                             <div className="question-response">
                                 <input
+                                    style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none'}}
                                     type="number"
                                     name="answer"
                                     value={currResponse !== undefined && currResponse.length !== 0 ? currResponse[0].response.number : ''}

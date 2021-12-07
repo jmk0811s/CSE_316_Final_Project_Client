@@ -72,7 +72,6 @@ function LogDay(props) {
                         //console.log("bool: " + bool);
 
                         if (dbResponses[j].question === responses[i].question && bool) {
-
                             if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice.length === 0) {
                                 responses[i].status = 'DELETED'; // @
                                 //console.log(responses);

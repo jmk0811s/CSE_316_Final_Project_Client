@@ -15,6 +15,7 @@ function ViewData(){
     const [showViewByQuestion, setShowViewByQuestion] = useState(false);
 
     useEffect(() => {
+        console.log('useEffect API')
         getQuestionsAPIMethod().then((questions) => {
             setQuestions(questions);
         });
@@ -22,6 +23,11 @@ function ViewData(){
             setResponses(responses);
         });
     }, []);
+
+    useEffect(()=>{
+        setQuestions(questions);
+        setResponses(responses);
+    },[questions, responses])
 
     return(
         <div>

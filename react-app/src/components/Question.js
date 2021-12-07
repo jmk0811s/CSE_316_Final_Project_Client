@@ -100,6 +100,7 @@ function Question(props) {
 
         let oldResponse = currResponse[0];
         console.log("oldResponse");
+        console.log(res);
         //console.log(oldResponse);
         let id = nanoid();
         let newResponse = {

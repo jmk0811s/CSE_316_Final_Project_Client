@@ -21,18 +21,18 @@ function EditQuestions(props){
             console.log(questions);
             for (let i = 0; i < questions.length; i++) {
                 if (questions[i].status === 'ADDED') {
-                    console.log("added");
+                    console.log("question added");
                     questions[i].status = '';
                     createQuestionAPIMethod(questions[i]);
                 }
                 for (let j = 0; j < dbQuestions.length; j++) {
                     if (dbQuestions[j].nanoid === questions[i].nanoid) {
                         if (questions[i].status === 'DELETED' && dbQuestions[j]._id !== undefined) {
-                            console.log("deleted");
+                            console.log("question deleted");
                             deleteQuestionByIdAPIMethod(dbQuestions[j]._id);
                         }
                         else {
-                            console.log("updated");
+                            console.log("question updated");
                             let newQuestion = {
                                 _id: dbQuestions[j]._id,
                                 type: questions[i].type,
@@ -90,7 +90,7 @@ function EditQuestions(props){
             {
                 questions ?
                     questions.filter((question) => question.status !== 'DELETED').map((question) =>
-                        <li className="QuestionList" style={{listStyle: "none", padding: "5px"}}>
+                        <li className="question-wrapper" style={{listStyle: "none", padding: "5px"}}>
                             <Question
                                 editMode={true}
                                 type={question.type}

@@ -189,7 +189,7 @@ export const createResponseAPIMethod = (response) => {
         .then(parseJSON);
 }
 
-//update question
+//update response
 export const updateResponseAPIMethod = (response) => {
     return fetch(`/api/responses/${response._id}`, {
         ...defaultHeaders,
@@ -198,7 +198,7 @@ export const updateResponseAPIMethod = (response) => {
     }).then(checkStatus);
 }
 
-//delete question
+//delete response
 export const deleteResponseByIdAPIMethod = (responseId) => {
     return fetch(`/api/responses/${responseId}`, {
         ...defaultHeaders,

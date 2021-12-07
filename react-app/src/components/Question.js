@@ -28,7 +28,7 @@ function Question(props) {
     }, [props]);
 
     useEffect(() => {
-        console.log(date);
+        //console.log(date);
     }, [date]);
 
     useEffect(() => {
@@ -100,7 +100,7 @@ function Question(props) {
 
         let oldResponse = currResponse[0];
         console.log("oldResponse");
-        console.log(oldResponse);
+        //console.log(oldResponse);
         let id = nanoid();
         let newResponse = {
             response: {

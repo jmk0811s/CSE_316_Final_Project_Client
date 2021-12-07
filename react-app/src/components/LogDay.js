@@ -42,9 +42,10 @@ function LogDay(props) {
         getResponsesAPIMethod().then((dbResponses) => {
             for (let i = 0; i < responses.length; i++) {
                 //console.log(responses[i].response);
-                console.log("A: " + responses[i].date);
-                console.log("B: " + date);
-                if (responses[i].date === date || responses[i].date.toString().split('T')[0] === date.toISOString().split('T')[0]) {
+                //console.log("A: " + responses[i].date);
+                //console.log("B: " + date);
+                console.log(responses[i].date === date || responses[i].date.toString().split('T')[0] === date.toISOString().split('T')[0]);
+                if (true) {
                     if (responses[i].status === 'ADDED') {
                         if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice.length === 0) {
                             responses[i].status = 'DELETED'; // @
@@ -56,23 +57,40 @@ function LogDay(props) {
                         }
                     }
                     for (let j = 0; j < dbResponses.length; j++) {
-                        if (dbResponses[j].question === responses[i].question) {
+                        //console.log("A: " + dbResponses[j].date);
+                        //console.log("B: " + responses[i].date);
+                        //console.log(responses[i].nanoid);
+                        //console.log(dbResponses[j].date === responses[i].date);
+
+
+                        let dbDate = dateToString(new Date(dbResponses[j].date));
+                        let localDate = dateToString(new Date(responses[i].date));
+                        //console.log(dbDate);
+                        //console.log(localDate);
+
+                        let bool = dbDate === localDate;
+                        //console.log("bool: " + bool);
+
+                        if (dbResponses[j].question === responses[i].question && bool) {
+
                             if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice.length === 0) {
                                 responses[i].status = 'DELETED'; // @
-                                console.log(responses);
+                                //console.log(responses);
                                 console.log("empty response 2");
                                 deleteResponseByIdAPIMethod(dbResponses[j]._id);
-                            } else {
+                            }
+                            else {
                                 console.log("response updated");
+                                //console.log(responses[i].response);
                                 let newResponse = {
                                     _id: dbResponses[j]._id,
                                     response: responses[i].response,
-                                    date: responses[i].date,
+                                    date: dbResponses[j].date,
                                     nanoid: responses[i].nanoid,
                                     question: responses[i].question,
                                     creator: responses[i].creator
                                 }
-                                console.log(newResponse);
+                                //console.log(newResponse);
                                 updateResponseAPIMethod(newResponse);
                             }
                         }

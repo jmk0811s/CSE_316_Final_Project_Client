@@ -29,6 +29,7 @@ function EditQuestions(props){
                     if (dbQuestions[j].nanoid === questions[i].nanoid) {
                         if (questions[i].status === 'DELETED' && dbQuestions[j]._id !== undefined) {
                             console.log("question deleted");
+                            //questions.splice(i); //
                             deleteQuestionByIdAPIMethod(dbQuestions[j]._id);
                         }
                         else {

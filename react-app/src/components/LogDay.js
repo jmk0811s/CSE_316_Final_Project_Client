@@ -2,7 +2,9 @@ import React, {useState, useEffect} from 'react'
 import Question from "./Question";
 import {
     getResponsesAPIMethod,
-    createResponseAPIMethod
+    createResponseAPIMethod,
+    deleteResponseByIdAPIMethod,
+    updateResponseAPIMethod
 } from "../api/client";
 
 function LogDay(props) {
@@ -13,13 +15,9 @@ function LogDay(props) {
     useEffect(() => {
         setQuestions(props.questions);
         setResponses(props.responses);
-    }, [props]);
-
-    useEffect(() => {
-        console.log("@@@res");
-        console.log(responses);
-
-    }, [responses]);
+        setDate(date);
+        //console.log(date);
+    }, [props, date]);
 
     const dateToString = (date) => {
         return date.getFullYear() + " / " + (date.getMonth() + 1) + " / " + date.getDate();
@@ -43,65 +41,43 @@ function LogDay(props) {
         console.log(responses);
         getResponsesAPIMethod().then((dbResponses) => {
             for (let i = 0; i < responses.length; i++) {
-                if (responses[i].status === 'ADDED') {
-                    if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice.length === 0) {
-                        responses[i].status = '';
-                        console.log("empty response");
-                    }
-                    else {
-                        console.log("response added");
-                        responses[i].status = '';
-                        createResponseAPIMethod(responses[i]);
-                    }
-                }
-                /*
-                else {
-                    if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice.length === 0) {
-                        responses[i].status = '';
-                        console.log("empty response");
-                    }
-                    else {
-                        console.log("response added");
-                        responses[i].status = '';
-                        createResponseAPIMethod(responses[i]);
-                        console.log("response updated");
-                        let newResponse = {
-                            _id: dbQuestions[j]._id,
-                            type: questions[i].type,
-                            header: questions[i].header,
-                            choices: questions[i].choices,
-                            mdate: questions[i].mdate,
-                            nanoid: questions[i].nanoid,
-                            creator: questions[i].creator
+                //console.log(responses[i].response);
+                console.log("A: " + responses[i].date);
+                console.log("B: " + date);
+                if (responses[i].date === date || responses[i].date.toString().split('T')[0] === date.toISOString().split('T')[0]) {
+                    if (responses[i].status === 'ADDED') {
+                        if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice.length === 0) {
+                            responses[i].status = 'DELETED'; // @
+                            console.log("empty response");
+                        } else {
+                            console.log("response added");
+                            responses[i].status = '';
+                            createResponseAPIMethod(responses[i]);
                         }
                     }
-                }
-
-                 */
-                /*
-                for (let j = 0; j < dbResponses.length; j++) {
-                    if (dbQuestions[j].nanoid === questions[i].nanoid) {
-                        if (questions[i].status === 'DELETED' && dbQuestions[j]._id !== undefined) {
-                            console.log("response deleted");
-                            deleteQuestionByIdAPIMethod(dbQuestions[j]._id);
-                        }
-                        else {
-                            console.log("response updated");
-                            let newQuestion = {
-                                _id: dbQuestions[j]._id,
-                                type: questions[i].type,
-                                header: questions[i].header,
-                                choices: questions[i].choices,
-                                mdate: questions[i].mdate,
-                                nanoid: questions[i].nanoid,
-                                creator: questions[i].creator
+                    for (let j = 0; j < dbResponses.length; j++) {
+                        if (dbResponses[j].question === responses[i].question) {
+                            if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice.length === 0) {
+                                responses[i].status = 'DELETED'; // @
+                                console.log(responses);
+                                console.log("empty response 2");
+                                deleteResponseByIdAPIMethod(dbResponses[j]._id);
+                            } else {
+                                console.log("response updated");
+                                let newResponse = {
+                                    _id: dbResponses[j]._id,
+                                    response: responses[i].response,
+                                    date: responses[i].date,
+                                    nanoid: responses[i].nanoid,
+                                    question: responses[i].question,
+                                    creator: responses[i].creator
+                                }
+                                console.log(newResponse);
+                                updateResponseAPIMethod(newResponse);
                             }
-                            updateQuestionAPIMethod(newQuestion);
                         }
                     }
                 }
-
-                 */
             }
         });
     }

@@ -1,4 +1,5 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect} from 'react';
+import {nanoid} from 'nanoid';
 
 function Question(props) {
     const [editMode, setEditMode] = useState(props.editMode);
@@ -6,7 +7,7 @@ function Question(props) {
     const [header, setHeader] = useState(props.header);
     const [choices, setChoices] = useState(props.choices);
     const [mdate, setMDate] = useState(props.mdate);
-    const [nanoid, setNanoid] = useState(props.nanoid);
+    const [nanoId, setNanoId] = useState(props.nanoid);
     const [questions, setQuestions] = useState(props.questions);
     const [responses, setResponses] = useState(props.responses);
     const [currResponse, setCurrResponse] = useState();
@@ -20,39 +21,41 @@ function Question(props) {
         setChoices(props.choices);
         setHeader(props.header);
         setMDate(props.mdate);
-        setNanoid(props.nanoid);
+        setNanoId(props.nanoid);
         setQuestions(props.questions);
         setResponses(props.responses);
         setQuestionId(props.questionId);
     }, [props]);
 
     useEffect(() => {
+        console.log(date);
+    }, [date]);
+
+    useEffect(() => {
         //console.log(responses.length !== 0 && responses[0].question === questionId);
         //console.log(responses.length !== 0 ? responses[0].date : 0);
         //console.log(props.date);
-        setCurrResponse(responses.filter((res) =>
+        let res = responses.filter((res) =>
             res.question === questionId &&
-                (
-                    res.date === date
-                    ||
-                    res.date.toString().split('T')[0] === props.date.toISOString().split('T')[0]
-                )
-        ));
-        console.log("curr");
-        console.log(currResponse);
-        //console.log(date);
+            (
+                res.date === date
+                ||
+                res.date.toString().split('T')[0] === props.date.toISOString().split('T')[0]
+            )
+        )
+        setCurrResponse(res);
     }, [responses, props.date]);
 
     const updateQuestions = (newValue, field) => {
         let newQuestions = [];
         for (let i = 0; i < questions.length; i++) {
-            if (questions[i].nanoid === nanoid) {
+            if (questions[i].nanoid === nanoId) {
                 let newQuestion = {
                     type: field === 'type' ? newValue : type,
                     header: field === 'header' ? newValue : header,
                     choices: field === 'multiple_choice' ? newValue : choices,
                     mdate: mdate,
-                    nanoid: nanoid,
+                    nanoid: nanoId,
                     status: questions[i].status
                 }
                 console.log(newQuestion);
@@ -80,6 +83,7 @@ function Question(props) {
     }
 
     const updateResponse = (res, type, index) => {
+        //console.log("res");
         //console.log(res);
         //console.log(index);
         let newChoiceList = [];
@@ -97,14 +101,16 @@ function Question(props) {
         let oldResponse = currResponse[0];
         console.log("oldResponse");
         console.log(oldResponse);
+        let id = nanoid();
         let newResponse = {
             response: {
-                text: type === 'Text' ? res : '',
-                number: type === 'Number' ? res : null,
-                boolean: type === 'Boolean' ? res : null,
+                text: type === 'Text' ? res+="" : '',
+                number: type === 'Number' ? res*=1 : null,
+                boolean: type === 'Boolean' ? JSON.parse(res) : null,
                 multiple_choice: type === 'MultipleChoice' ? newChoiceList : []
             },
             date: date,
+            nanoid: id,
             question: questionId,
             status: ''
         }
@@ -122,14 +128,19 @@ function Question(props) {
             console.log("res NOT added but updated");
             for (let i = 0; i < responses.length; i++) {
                 if (responses[i] === oldResponse) {
+                    //console.log("new");
+                    //console.log(newResponse);
                     newResponses.push(newResponse);
                 }
                 else {
                     newResponses.push(responses[i]);
                 }
             }
+            //console.log("@@@newResponses");
+            //console.log(newResponses);
             props.setResponses(newResponses);
         }
+        console.log(newResponses);
     }
 
     return (
@@ -177,7 +188,7 @@ function Question(props) {
                         :
                         null
                 }
-                <button onClick={() => props.deleteQuestion(nanoid)} style={{background: "transparent", border: "none"}}>
+                <button onClick={() => props.deleteQuestion(nanoId)} style={{background: "transparent", border: "none"}}>
                     <span  className="material-icons">delete_outline</span>
                 </button>
             </div>
@@ -209,7 +220,7 @@ function Question(props) {
                             //Number type
                             <div className="question-response">
                                 <input
-                                    type="text"
+                                    type="number"
                                     name="answer"
                                     value={currResponse !== undefined && currResponse.length !== 0 ? currResponse[0].response.number : ''}
                                     placeholder={"Response"}
@@ -223,16 +234,16 @@ function Question(props) {
                                     <div className="radio-wrapper">
                                         <label><input
                                             type="radio"
-                                            name={nanoid}
+                                            name={nanoId}
                                             value="true"
                                             checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.boolean ? currResponse[0].response.boolean : null}
                                             onChange={(e) => updateResponse(e.target.value, 'Boolean')}
                                         />true</label>
                                         <label><input
                                             type="radio"
-                                            name={nanoid}
+                                            name={nanoId}
                                             value="false"
-                                            checked={currResponse !== undefined && currResponse.length !== 0 && !currResponse[0].response.boolean ? currResponse[0].response.boolean : null}
+                                            checked={currResponse !== undefined && currResponse.length !== 0 && !currResponse[0].response.boolean ? !currResponse[0].response.boolean : null}
                                             onChange={(e) => updateResponse(e.target.value, 'Boolean')}
                                         />false</label>
                                     </div>
@@ -247,9 +258,9 @@ function Question(props) {
                                                     <div className="radio-wrapper3">
                                                         <label><input
                                                             type="radio"
-                                                            name={nanoid}
+                                                            name={nanoId}
                                                             value="true"
-                                                            checked={currResponse !== undefined && currResponse.multiple_choice ? currResponse.multiple_choice[i] : null}
+                                                            checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.multiple_choice ? currResponse[0].response.multiple_choice[i] : null}
                                                             onChange={(e) => updateResponse(e.target.value, 'MultipleChoice', i)}
                                                         />
                                                             <input type="text" name="text" value={choice} placeholder="new choice"/>

@@ -33,7 +33,7 @@ function Main(props) {
                 setResponses(responses);
             });
 
-            console.log(currUser)
+            //console.log(currUser)
             //get profile image url of current user
             if (currUser.hasOwnProperty('profile_url') && currUser.profile_url !== '') {
                 setImgURL(currUser.profile_url);

@@ -150,47 +150,48 @@ function Question(props) {
                 <div className="question-header">
                     <input // question header
                         type="text"
+                        style={{height: "30px"}}
                         name="header"
                         value={header}
                         placeholder={"Header"}
                         onChange={(e) => {setHeader(e.target.value);updateQuestions(e.target.value, 'header');}}/>
                 </div>
-                <select // dropdown question type selection menu
-                    value={type}
-                    onChange={(e) => {setType(e.target.value);updateQuestions(e.target.value, 'type');}}
-                    className="dropdown">
-                    <option value="Text">Text</option>
-                    <option value="Number">Number</option>
-                    <option value="Boolean">Boolean</option>
-                    <option value="MultipleChoice">Multiple Choice</option>
-                </select>
+                <div className="selectAndDelete" >
+                    <select // dropdown question type selection menu
+                        value={type}
+                        style={{height: "30px"}}
+                        onChange={(e) => {setType(e.target.value);updateQuestions(e.target.value, 'type');}}
+                        className="dropdown">
+                        <option value="Text">Text</option>
+                        <option value="Number">Number</option>
+                        <option value="Boolean">Boolean</option>
+                        <option value="MultipleChoice">Multiple Choice</option>
+                    </select>
+                    <button onClick={() => props.deleteQuestion(nanoId)} style={{background: "transparent", border: "none", padding: "0px"}}>
+                        <span  className="material-icons">delete_outline</span>
+                    </button>
+                </div>
+
                 {
                     type === 'MultipleChoice' ?
-                        <div className="radio-wrapper1" style={{margin:"10px"}}>
-                            <div className="radio-wrapper2">
-                                <div className="radio-wrapper3">
-                                    <label><input type="radio" name="radio" value="true" checked={false}/>
-                                        <input type="text" name="text" value={choices[0]} placeholder="new choice" onChange={(e) => updateChoice(e, 0)}/>
-                                    </label>
-                                    <div className="radio-wrapper3">
-                                        <label><input type="radio" name="radio" value="true" checked={false}/>
-                                            <input type="text" name="text" value={choices[1]} placeholder="new choice" onChange={(e) => updateChoice(e, 1)}/>
-                                        </label>
-                                    </div>
-                                    <div className="radio-wrapper3">
-                                        <label><input type="radio" name="radio" value="true" checked={false}/>
-                                            <input type="text" name="text" value={choices[2]} placeholder="new choice" onChange={(e) => updateChoice(e, 2)}/>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                        <div className="radio-wrapper1">
+                            <label>
+                                <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
+                                <input className="radio-input" style={{border: 'none'}} type="text" name="text" value={choices[0]} placeholder="new choice" onChange={(e) => updateChoice(e, 0)}/>
+                            </label>
+                            <label>
+                                <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
+                                <input className="radio-input" style={{border: 'none'}} type="text" name="text" value={choices[1]} placeholder="new choice" onChange={(e) => updateChoice(e, 1)}/>
+                            </label>
+                            <label>
+                                <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
+                                <input className="radio-input" style={{border: 'none'}} type="text" name="text" value={choices[2]} placeholder="new choice" onChange={(e) => updateChoice(e, 2)}/>
+                            </label>
                         </div>
                         :
                         null
                 }
-                <button onClick={() => props.deleteQuestion(nanoId)} style={{background: "transparent", border: "none"}}>
-                    <span  className="material-icons">delete_outline</span>
-                </button>
+
             </div>
             :
             // Answer mode

@@ -31,6 +31,7 @@ function Question(props) {
         setQuestionId(props.questionId);
         setReadOnly(props.readOnly);
         setIndex(props.index);
+        console.log(currResponse);
     }, [props]);
 
     useEffect(() => {
@@ -248,7 +249,7 @@ function Question(props) {
                                                             name={nanoId}
                                                             value="true"
                                                             checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.multiple_choice ? currResponse[0].response.multiple_choice[i] : null}
-                                                            onChange={(e) => {props.updateResponse(e.target.value, 'MultipleChoice', index, choices, currResponse[0], questionId)}}
+                                                            onChange={(e) => {props.updateResponse(e.target.value, 'MultipleChoice', i, choices, currResponse[0], questionId)}}
                                                         />
                                                         <p style={{margin: "0", paddingLeft: '10px'}}>{choice}</p>
                                                     </div>

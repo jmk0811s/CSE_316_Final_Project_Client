@@ -122,7 +122,7 @@ function LogDay(props) {
         let newChoiceList = [];
         if (type === 'MultipleChoice') {
             for (let i = 0; i < choices.length; i++) {
-                if (index === i) {
+                if (index == i) {
                     newChoiceList.push(true);
                 }
                 else {
@@ -130,6 +130,9 @@ function LogDay(props) {
                 }
             }
         }
+        console.log("new choice list: ")
+        console.log(newChoiceList);
+        console.log(index);
         let id = nanoid();
         let newResponse = {
             _id: oldResponse._id,

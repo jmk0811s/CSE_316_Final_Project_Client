@@ -20,6 +20,7 @@ function ViewData(){
             setQuestions(questions);
         });
         getResponsesAPIMethod().then((responses) => {
+            console.log(responses)
             setResponses(responses);
         });
     }, []);

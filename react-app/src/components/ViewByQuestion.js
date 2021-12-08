@@ -18,6 +18,9 @@ function ViewByQuestion(props){
     const [textQuestion, setTextQuestion] = useState();
     const [textResponses, setTextResponses] = useState();
     const [textResponsesIndex, setTextResponsesIndex] = useState(0);
+    //newly added
+    const [textQuestionIndex, setTextQuestionIndex] = useState(0);
+    const [currTextResponses, setCurrTextResponses] = useState();
 
     const [numberQuestion, setNumberQuestion] = useState();
     const [numberResponses, setNumberResponses] = useState();
@@ -30,15 +33,34 @@ function ViewByQuestion(props){
         setResponses(props.responses);
         if(props.questions){
             setTextQuestion(filterOnly(props.questions, "textQuestion"))
+
             setNumberQuestion(filterOnly(props.questions, "numberQuestion"))
             setBooleanQuestion(filterOnly(props.questions, "booleanQuestion"))
         }
         if(props.responses){
             setTextResponses(sortByDate(filterOnly(props.responses, "textResponse")));
+
+
             setNumberResponses(sortByDate2(filterOnly(props.responses, "numberResponse")));
             setBooleanResponses(sortByDate2(filterOnly(props.responses, "booleanResponse")));
         }
     },[props.responses, props.questions])
+
+    useEffect(()=>{
+        // console.log(textQuestion[textQuestionIndex]);
+        if(textQuestion){
+            // console.log("1PASS")
+            if(textQuestion[textQuestionIndex] && textResponses){
+                // console.log("2PASS")
+                // console.log(textResponses)
+                // console.log(textQuestion[textQuestionIndex]._id)
+                // console.log(filterById(textResponses, textQuestion[textQuestionIndex]._id))
+                setCurrTextResponses(filterById(textResponses, textQuestion[textQuestionIndex]._id));
+            }
+        }
+    },[textResponses, textQuestion])
+
+    console.log(currTextResponses)
 
     //최신날짜 = 0번째
     const sortByDate = (list) => {
@@ -69,6 +91,9 @@ function ViewByQuestion(props){
             return list.filter(r=> r.type === "Boolean");
         }
     }
+    const filterById = (list, id) => {
+        return list.filter(r=> r.question===id);
+    }
 
 
     // let sortedList;
@@ -82,23 +107,47 @@ function ViewByQuestion(props){
     const dateToString = (date) => {
         return date.getFullYear() + " / " + (date.getMonth() + 1) + " / " + date.getDate();
     }
-    const prev = ()=>{
-        if(textResponsesIndex < textResponses.length-1){
-            setTextResponsesIndex(textResponsesIndex+1);
+
+    const prev = (prop)=> ()=>{
+        if(prop==='date'){
+            if(textResponsesIndex < currTextResponses.length-1){
+                setTextResponsesIndex(textResponsesIndex+1);
+            }
+        }
+        else if(prop === 'question'){
+            if(textQuestionIndex < textQuestion.length-1){
+                setCurrTextResponses(filterById(textResponses, textQuestion[textQuestionIndex+1]._id));
+                console.log(textQuestionIndex)
+                setTextQuestionIndex(textQuestionIndex+1)
+                console.log(textQuestionIndex)
+                setTextResponsesIndex(0);
+            }
         }
     }
-    const next = ()=>{
-        if(textResponsesIndex>0){
-            setTextResponsesIndex(textResponsesIndex-1);
+    const next = (prop)=>()=> {
+        if(prop==='date'){
+            if(textResponsesIndex>0){
+                setTextResponsesIndex(textResponsesIndex-1);
+            }
+        }
+        else if(prop === 'question'){
+            if(textQuestionIndex >0){
+                setCurrTextResponses(filterById(textResponses, textQuestion[textQuestionIndex-1]._id));
+                console.log(textQuestionIndex)
+                setTextQuestionIndex(textQuestionIndex-1)
+                console.log(textQuestionIndex)
+                setTextResponsesIndex(0);
+            }
         }
     }
 
     console.log(responses)
     // console.log(textResponses)
     console.log(questions)
-    // console.log(textQuestion)
-    // console.log(numberResponses)
-    console.log(booleanResponses)
+    console.log(numberQuestion)
+    console.log(numberResponses)
+    console.log(textQuestion)
+    // console.log(booleanResponses)
 
 
 
@@ -114,19 +163,30 @@ function ViewByQuestion(props){
           </div>
           <div className="TextQuestionData">
               <div className="LogSelectionBar" style={{display: "flex", flexDirection: 'row',justifyContent: "space-between"}}>
-                  <button onClick={prev}>
-                      <h2>{"<"}</h2>
-                  </button>
                   <h2>
-                      {textResponses? textResponses[textResponsesIndex].date : ""}
+                      {/*{textResponses? (textResponses[textResponsesIndex]?textResponses[textResponsesIndex].date:"") : ""}*/}
+                      {currTextResponses? (currTextResponses[textResponsesIndex]?currTextResponses[textResponsesIndex].date:"") : ""}
                   </h2>
-                  <button onClick={next}>
-                      <h2>{">"}</h2>
-                  </button>
               </div>
               <div className="TextQuestionDataView" style={{marginBottom: 0}}>
-                  <h2>{textQuestion? textQuestion[0].header: ""}</h2>
-                  <p>{textResponses? textResponses[textResponsesIndex].response.text: ""}</p>
+                  <div className="LogSelectionBar" style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between'}}>
+                      <button onClick={prev('question')}>
+                          <h2>{"<"}</h2>
+                      </button>
+                      <h2>{textQuestion? (textQuestion[textQuestionIndex]?textQuestion[textQuestionIndex].header:""): ""}</h2>
+                      <button onClick={next('question')}>
+                          <h2>{">"}</h2>
+                      </button>
+                  </div>
+                  <div className="LogSelectionBar" style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between'}}>
+                      <button onClick={prev('date')}>
+                          <h2>{"<"}</h2>
+                      </button>
+                      <p>{currTextResponses? (currTextResponses[textResponsesIndex]? currTextResponses[textResponsesIndex].response.text:""): ""}</p>
+                      <button onClick={next('date')}>
+                          <h2>{">"}</h2>
+                      </button>
+                  </div>
               </div>
           </div>
 
@@ -136,7 +196,7 @@ function ViewByQuestion(props){
           </div>
 
           <div className="NumberQuestionData">
-              <h2>{numberQuestion? numberQuestion[0].header: ""}</h2>
+              <h2>{numberQuestion? (numberQuestion[0]? numberQuestion[0].header:""): ""}</h2>
 
               <ResponsiveContainer width="100%" height={400}>
                   <LineChart
@@ -161,7 +221,7 @@ function ViewByQuestion(props){
               <h1>Boolean type responses</h1>
           </div>
           <div className="BooleanQuestionData">
-              <h2>{booleanQuestion? booleanQuestion[0].header: ""}</h2>
+              <h2>{booleanQuestion? (booleanQuestion[0]? booleanQuestion[0].header: ""): ""}</h2>
               <ResponsiveContainer width="100%" height={400}>
                   <BarChart
                       width={730}

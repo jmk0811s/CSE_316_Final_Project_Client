@@ -11,7 +11,7 @@ function Question(props) {
     const [choices, setChoices] = useState(props.choices);
     //const [mdate, setMDate] = useState(props.mdate);
     const [nanoId, setNanoId] = useState(props.nanoid);
-    const [questions, setQuestions] = useState(props.questions);
+    //const [questions, setQuestions] = useState(props.questions);
     const [responses, setResponses] = useState(props.responses);
     const [currResponse, setCurrResponse] = useState();
     const [questionId, setQuestionId] = useState(props.questionId);
@@ -26,7 +26,7 @@ function Question(props) {
         setHeader(props.header);
         //setMDate(props.mdate);
         setNanoId(props.nanoid);
-        setQuestions(props.questions);
+        //setQuestions(props.questions);
         setResponses(props.responses);
         setQuestionId(props.questionId);
         setReadOnly(props.readOnly);
@@ -48,17 +48,21 @@ function Question(props) {
         setCurrResponse(res);
     }, [responses, props.date]);
 
-    const updateChoice = (e, index) => {
+    const updateChoice = (e, i) => {
         let newChoices = [];
-        for (let i = 0; i < 3; i++) {
-            if (index == i) {
-                newChoices[i] = e.target.value;
+        console.log("old cho");
+        console.log(choices);
+        for (let j = 0; j < 3; j++) {
+            if (i === j) {
+                newChoices.push(e.target.value);
             }
             else {
-                newChoices.push(choices[i]);
+                newChoices.push(choices[j]);
             }
         }
-        props.updateQuestion(newChoices, 'multiple_choice');
+        console.log("new cho");
+        console.log(newChoices);
+        props.updateQuestion(newChoices, 'multiple_choice', index);
     }
 
     return (

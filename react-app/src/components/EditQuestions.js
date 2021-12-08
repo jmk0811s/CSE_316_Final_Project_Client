@@ -7,7 +7,7 @@ import {
     deleteQuestionByIdAPIMethod,
     getQuestionsAPIMethod,
     updateQuestionAPIMethod,
-    deleteResponseByIdAPIMethod
+    deleteResponseByIdAPIMethod, getResponsesAPIMethod
 } from "../api/client";
 
 function EditQuestions(props){
@@ -19,6 +19,9 @@ function EditQuestions(props){
         getQuestionsAPIMethod().then((questions) => {
             setDBQuestions(questions);
             setQuestions(questions);
+        });
+        getResponsesAPIMethod().then((responses) => {
+            setResponses(responses);
         });
     }, []);
 
@@ -115,6 +118,8 @@ function EditQuestions(props){
             newQuestions[index].header = newValue;
         }
         else if (field === 'multiple_choice') {
+            console.log(newValue);
+            console.log(index);
             newQuestions[index].choices = newValue;
         }
         setQuestions(newQuestions);

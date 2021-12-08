@@ -31,6 +31,12 @@ function ViewData(){
 
     return(
         <div>
+            <button onClick={() => setShowViewByDate(false)}>
+                <h2>ViewByQuestion</h2>
+            </button>
+            <button onClick={() => setShowViewByDate(true)}>
+                <h2>ViewByDate</h2>
+            </button>
             {
                 showViewByDate ?
                     <div>

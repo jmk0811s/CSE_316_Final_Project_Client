@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {nanoid} from 'nanoid';
 
 function Question(props) {
+    const [readOnly, setReadOnly] = useState(false);
     const [editMode, setEditMode] = useState(props.editMode);
     const [type, setType] = useState(props.type);
     const [header, setHeader] = useState(props.header);
@@ -25,11 +26,13 @@ function Question(props) {
         setQuestions(props.questions);
         setResponses(props.responses);
         setQuestionId(props.questionId);
+        setReadOnly(props.readOnly);
     }, [props]);
 
     useEffect(() => {
-        //console.log(date);
-    }, [date]);
+        console.log("curr");
+        console.log(currResponse);
+    }, [currResponse]);
 
     useEffect(() => {
         //console.log(responses.length !== 0 && responses[0].question === questionId);
@@ -145,57 +148,8 @@ function Question(props) {
     }
 
     return (
-        editMode ?
-            //Edit mode
-            <div className="Question">
-                <div className="question-header">
-                    <input // question header
-                        type="text"
-                        style={{height: "30px"}}
-                        name="header"
-                        value={header}
-                        placeholder={"Header"}
-                        onChange={(e) => {setHeader(e.target.value);updateQuestions(e.target.value, 'header');}}/>
-                </div>
-                <div className="selectAndDelete" >
-                    <select // dropdown question type selection menu
-                        value={type}
-                        style={{height: "30px"}}
-                        onChange={(e) => {setType(e.target.value);updateQuestions(e.target.value, 'type');}}
-                        className="dropdown">
-                        <option value="Text">Text</option>
-                        <option value="Number">Number</option>
-                        <option value="Boolean">Boolean</option>
-                        <option value="MultipleChoice">Multiple Choice</option>
-                    </select>
-                    <button onClick={() => props.deleteQuestion(nanoId)} style={{background: "transparent", border: "none", padding: "0px"}}>
-                        <span  className="material-icons">delete_outline</span>
-                    </button>
-                </div>
-
-                {
-                    type === 'MultipleChoice' ?
-                        <div className="radio-wrapper1">
-                            <label>
-                                <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
-                                <input className="radio-input" style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none', borderRadius: 0}} type="text" name="text" value={choices[0]} placeholder="new choice" onChange={(e) => updateChoice(e, 0)}/>
-                            </label>
-                            <label>
-                                <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
-                                <input className="radio-input" style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none', borderRadius: 0}} type="text" name="text" value={choices[1]} placeholder="new choice" onChange={(e) => updateChoice(e, 1)}/>
-                            </label>
-                            <label>
-                                <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
-                                <input className="radio-input" style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none', borderRadius: 0}} type="text" name="text" value={choices[2]} placeholder="new choice" onChange={(e) => updateChoice(e, 2)}/>
-                            </label>
-                        </div>
-                        :
-                        null
-                }
-
-            </div>
-            :
-            // Answer mode
+        readOnly ?
+            //Read-only mode (view data)
             <div className="Question">
                 <h3 style={{margin:0}}>{header}</h3>
                 {
@@ -207,7 +161,6 @@ function Question(props) {
                                 name="answer"
                                 value={currResponse !== undefined && currResponse.length !== 0 ? currResponse[0].response.text : ''}
                                 placeholder={"Response"}
-                                onChange={(e) => updateResponse(e.target.value, 'Text')}
                             />
                         </div>
                         :
@@ -220,7 +173,6 @@ function Question(props) {
                                     name="answer"
                                     value={currResponse !== undefined && currResponse.length !== 0 ? currResponse[0].response.number : ''}
                                     placeholder={"Response"}
-                                    onChange={(e) => updateResponse(e.target.value, 'Number')}
                                 />
                             </div>
                             :
@@ -233,44 +185,165 @@ function Question(props) {
                                             name={nanoId}
                                             value="true"
                                             checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.boolean ? currResponse[0].response.boolean : null}
-                                            onChange={(e) => updateResponse(e.target.value, 'Boolean')}
                                         />true</label>
                                         <label><input
                                             type="radio"
                                             name={nanoId}
                                             value="false"
                                             checked={currResponse !== undefined && currResponse.length !== 0 && !currResponse[0].response.boolean ? !currResponse[0].response.boolean : null}
-                                            onChange={(e) => updateResponse(e.target.value, 'Boolean')}
                                         />false</label>
                                     </div>
                                 </div>
                                 :
                                 type == "MultipleChoice" ?
                                     //MultipleChoice type
+                                    <div className="radio-wrapper2">
+                                        {
+                                            choices.map((choice, i) =>
+                                                <div className="radio-wrapper3" style={{display: 'flex', marginTop: '10px', marginBottom: '10px'}}>
+                                                    <input
+                                                        style={{margin: "0", padding: '0'}}
+                                                        type="radio"
+                                                        name={nanoId}
+                                                        value="true"
+                                                        checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.multiple_choice ? currResponse[0].response.multiple_choice[i] : null}
+                                                    />
+                                                    <p style={{margin: "0", paddingLeft: '10px'}}>{choice}</p>
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    :
+                                    null
+                }
+            </div>
+            :
+            editMode ?
+                //Edit mode
+                <div className="Question">
+                    <div className="question-header">
+                        <input // question header
+                            type="text"
+                            style={{height: "30px"}}
+                            name="header"
+                            value={header}
+                            placeholder={"Header"}
+                            onChange={(e) => {setHeader(e.target.value);updateQuestions(e.target.value, 'header');}}/>
+                    </div>
+                    <div className="selectAndDelete" >
+                        <select // dropdown question type selection menu
+                            value={type}
+                            style={{height: "30px"}}
+                            onChange={(e) => {setType(e.target.value);updateQuestions(e.target.value, 'type');}}
+                            className="dropdown">
+                            <option value="Text">Text</option>
+                            <option value="Number">Number</option>
+                            <option value="Boolean">Boolean</option>
+                            <option value="MultipleChoice">Multiple Choice</option>
+                        </select>
+                        <button onClick={() => props.deleteQuestion(nanoId)} style={{background: "transparent", border: "none", padding: "0px"}}>
+                            <span  className="material-icons">delete_outline</span>
+                        </button>
+                    </div>
+
+                    {
+                        type === 'MultipleChoice' ?
+                            <div className="radio-wrapper1">
+                                <label>
+                                    <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
+                                    <input className="radio-input" style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none', borderRadius: 0}} type="text" name="text" value={choices[0]} placeholder="new choice" onChange={(e) => updateChoice(e, 0)}/>
+                                </label>
+                                <label>
+                                    <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
+                                    <input className="radio-input" style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none', borderRadius: 0}} type="text" name="text" value={choices[1]} placeholder="new choice" onChange={(e) => updateChoice(e, 1)}/>
+                                </label>
+                                <label>
+                                    <input type="radio" name="radio" value="true" checked={false} style={{margin:0}}/>
+                                    <input className="radio-input" style={{borderRight: 'none', borderLeft: 'none', borderTop: 'none', borderRadius: 0}} type="text" name="text" value={choices[2]} placeholder="new choice" onChange={(e) => updateChoice(e, 2)}/>
+                                </label>
+                            </div>
+                            :
+                            null
+                    }
+
+                </div>
+                :
+                // Answer mode
+                <div className="Question">
+                    <h3 style={{margin:0}}>{header}</h3>
+                    {
+                        type == "Text" ?
+                            //Text type
+                            <div className="question-response">
+                                <input
+                                    type="text"
+                                    name="answer"
+                                    value={currResponse !== undefined && currResponse.length !== 0 ? currResponse[0].response.text : ''}
+                                    placeholder={"Response"}
+                                    onChange={(e) => updateResponse(e.target.value, 'Text')}
+                                />
+                            </div>
+                            :
+                            type == "Number" ?
+                                //Number type
+                                <div className="question-response">
+                                    <input
+                                        style={{width: '150px'}}
+                                        type="number"
+                                        name="answer"
+                                        value={currResponse !== undefined && currResponse.length !== 0 ? currResponse[0].response.number : ''}
+                                        placeholder={"Response"}
+                                        onChange={(e) => updateResponse(e.target.value, 'Number')}
+                                    />
+                                </div>
+                                :
+                                type == "Boolean" ?
+                                    //Boolean type
+                                    <div className="question-response">
+                                        <div className="radio-wrapper">
+                                            <label><input
+                                                type="radio"
+                                                name={nanoId}
+                                                value="true"
+                                                checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.boolean ? currResponse[0].response.boolean : null}
+                                                onChange={(e) => updateResponse(e.target.value, 'Boolean')}
+                                            />true</label>
+                                            <label><input
+                                                type="radio"
+                                                name={nanoId}
+                                                value="false"
+                                                checked={currResponse !== undefined && currResponse.length !== 0 && !currResponse[0].response.boolean ? !currResponse[0].response.boolean : null}
+                                                onChange={(e) => updateResponse(e.target.value, 'Boolean')}
+                                            />false</label>
+                                        </div>
+                                    </div>
+                                    :
+                                    type == "MultipleChoice" ?
+                                        //MultipleChoice type
                                         <div className="radio-wrapper2">
                                             {
                                                 choices.map((choice, i) =>
                                                     <div className="radio-wrapper3" style={{display: 'flex', marginTop: '10px', marginBottom: '10px'}}>
                                                         {/*<label>*/}
-                                                            <input
-                                                                style={{margin: "0", padding: '0'}}
-                                                                type="radio"
-                                                                name={nanoId}
-                                                                value="true"
-                                                                checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.multiple_choice ? currResponse[0].response.multiple_choice[i] : null}
-                                                                onChange={(e) => updateResponse(e.target.value, 'MultipleChoice', i)}
-                                                            />
-                                                            <p style={{margin: "0", paddingLeft: '10px'}}>{choice}</p>
-                                                            {/*<input type="text" name="text" value={choice} placeholder="new choice"/>*/}
+                                                        <input
+                                                            style={{margin: "0", padding: '0'}}
+                                                            type="radio"
+                                                            name={nanoId}
+                                                            value="true"
+                                                            checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.multiple_choice ? currResponse[0].response.multiple_choice[i] : null}
+                                                            onChange={(e) => updateResponse(e.target.value, 'MultipleChoice', i)}
+                                                        />
+                                                        <p style={{margin: "0", paddingLeft: '10px'}}>{choice}</p>
+                                                        {/*<input type="text" name="text" value={choice} placeholder="new choice"/>*/}
                                                         {/*</label>*/}
                                                     </div>
                                                 )
                                             }
                                         </div>
-                                    :
-                                    null
-                }
-            </div>
+                                        :
+                                        null
+                    }
+                </div>
     );
 }
 export default Question

@@ -55,6 +55,7 @@ function ViewByDate(props) {
                         <li className="question-wrapper" style={{listStyle: "none", padding: "5px"}}>
                             <Question
                                 editMode={false}
+                                readOnly={true}
                                 type={question.type}
                                 header={question.header}
                                 choices={question.choices}

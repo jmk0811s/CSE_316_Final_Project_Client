@@ -118,6 +118,7 @@ function LogDay(props) {
                         <li className="question-wrapper" style={{listStyle: "none", padding: "5px"}}>
                             <Question
                                 editMode={false}
+                                readOnly={false}
                                 type={question.type}
                                 header={question.header}
                                 choices={question.choices}

@@ -107,7 +107,7 @@ export const updateAddressAPIMethod = (address) => {
 export const getQuestionsAPIMethod = () => {
     return fetch(`/api/questions`, {
         ...defaultHeaders,
-    }).then(checkStatus)
+    }).then(checkStatusQuestion)
         .then(parseJSON);
 }
 
@@ -216,6 +216,15 @@ function checkLoginStatus(response) {
         return false;
     }
 }
+
+function checkStatusQuestion(response) {
+    if (response.status >= 200 && response.status < 300) {
+        return response;
+    } else {
+        return {};
+    }
+}
+
 
 function checkStatus(response) {
     if (response.status >= 200 && response.status < 300) {

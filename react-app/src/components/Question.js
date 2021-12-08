@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {nanoid} from 'nanoid';
+import {getQuestionsAPIMethod, getResponsesAPIMethod} from "../api/client";
 
 function Question(props) {
     const [readOnly, setReadOnly] = useState(false);
@@ -14,6 +15,7 @@ function Question(props) {
     const [currResponse, setCurrResponse] = useState();
     const [questionId, setQuestionId] = useState(props.questionId);
     const [date, setDate] = useState(props.date);
+    const [tempResList, setTempResList] = useState([]);
 
     useEffect(() => {
         setDate(props.date);
@@ -30,8 +32,17 @@ function Question(props) {
     }, [props]);
 
     useEffect(() => {
-        console.log("curr");
-        console.log(currResponse);
+        getQuestionsAPIMethod().then((questions) => {
+            setQuestions(questions);
+        });
+        getResponsesAPIMethod().then((responses) => {
+            setResponses(responses);
+        });
+    }, []);
+
+    useEffect(() => {
+        //console.log("curr");
+        //console.log(currResponse);
     }, [currResponse]);
 
     useEffect(() => {
@@ -86,9 +97,6 @@ function Question(props) {
     }
 
     const updateResponse = (res, type, index) => {
-        //console.log("res");
-        //console.log(res);
-        //console.log(index);
         let newChoiceList = [];
         if (type === 'MultipleChoice') {
             for (let i = 0; i < choices.length; i++) {
@@ -102,11 +110,9 @@ function Question(props) {
         }
 
         let oldResponse = currResponse[0];
-        console.log("oldResponse");
-        console.log(res);
-        //console.log(oldResponse);
         let id = nanoid();
         let newResponse = {
+            _id: oldResponse !== undefined ? oldResponse._id : null,
             response: {
                 text: type === 'Text' ? res+="" : '',
                 number: type === 'Number' ? res*=1 : null,
@@ -130,10 +136,9 @@ function Question(props) {
         }
         else { // If there is a response, update it
             console.log("res NOT added but updated");
+            newResponse.status = 'UPDATED';
             for (let i = 0; i < responses.length; i++) {
-                if (responses[i] === oldResponse) {
-                    //console.log("new");
-                    //console.log(newResponse);
+                if (responses[i].question === oldResponse.question) {
                     newResponses.push(newResponse);
                 }
                 else {
@@ -150,7 +155,7 @@ function Question(props) {
     return (
         readOnly ?
             //Read-only mode (view data)
-            <div className="Question">
+            <div className="Question" style={{marginBottom:"50px"}}>
                 <h3 style={{margin:0}}>{header}</h3>
                 {
                     type == "Text" ?
@@ -324,7 +329,6 @@ function Question(props) {
                                             {
                                                 choices.map((choice, i) =>
                                                     <div className="radio-wrapper3" style={{display: 'flex', marginTop: '10px', marginBottom: '10px'}}>
-                                                        {/*<label>*/}
                                                         <input
                                                             style={{margin: "0", padding: '0'}}
                                                             type="radio"
@@ -334,8 +338,6 @@ function Question(props) {
                                                             onChange={(e) => updateResponse(e.target.value, 'MultipleChoice', i)}
                                                         />
                                                         <p style={{margin: "0", paddingLeft: '10px'}}>{choice}</p>
-                                                        {/*<input type="text" name="text" value={choice} placeholder="new choice"/>*/}
-                                                        {/*</label>*/}
                                                     </div>
                                                 )
                                             }

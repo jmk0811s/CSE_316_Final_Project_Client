@@ -50,21 +50,6 @@ function Main(props) {
         setCurrUser(props.currUser)
     }, [props])
 
-    /*
-    useEffect(() => {
-        getQuestionsAPIMethod().then((questions) => {
-            setQuestions(questions);
-        });
-    }, [serverCall]);
-     */
-
-    const logout = () => {
-        logoutUserAPIMethod().then(() => {
-            props.setCurrUser({});
-            props.setLogin(false);
-        });
-    }
-
     return (
         <div className="Main">
             <div className= "MenuBar" >
@@ -76,10 +61,6 @@ function Main(props) {
                     <button onClick={() => setCurrentPage("EditQuestions")}>Edit Questions</button>
                     <button onClick={() => setCurrentPage("ViewData")}>View Data</button>
                 </div>
-
-                <button onClick={logout}>
-                    testLogout
-                </button>
 
                 <button className={"ProfileImg"} onClick={() => setCurrentPage("Profile")} >
                     <img src= {imgURL? imgURL:'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>

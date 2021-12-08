@@ -214,7 +214,7 @@ function ViewByQuestion(props){
     console.log(booleanQuestion)
     console.log(booleanResponses)
     console.log(currBooleanResponses)
-    console.log(currBooleanResponses[0])
+    //console.log(currBooleanResponses[0])
 
 
 

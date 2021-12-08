@@ -1,7 +1,8 @@
 
 
+// latest first
 export const sortByDate = (list) => {
-    return list.sort((a, b) => new Date(a.mdate) - new Date(b.mdate));
+    return list.sort((a, b) => new Date(b.mdate) - new Date(a.mdate));
 }
 
 export const dateToString = (date) => {

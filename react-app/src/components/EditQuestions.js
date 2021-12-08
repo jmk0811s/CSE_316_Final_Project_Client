@@ -17,8 +17,8 @@ function EditQuestions(props){
 
     useEffect(() => {
         getQuestionsAPIMethod().then((questions) => {
-            setDBQuestions(questions);
-            setQuestions(questions);
+            setDBQuestions(sortByDate(questions));
+            setQuestions(sortByDate(questions));
         });
         getResponsesAPIMethod().then((responses) => {
             setResponses(responses);
@@ -86,7 +86,7 @@ function EditQuestions(props){
             newQuestions.push(questions[i]);
         }
         newQuestions.push(newQuestion);
-        setQuestions(newQuestions);
+        setQuestions(sortByDate(newQuestions));
         console.log("question added - edit questions page");
         console.log(newQuestions);
     }

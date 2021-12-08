@@ -55,7 +55,7 @@ function LogDay(props) {
                 //console.log(responses[i]);
                 createResponseAPIMethod(responses[i]);
             }
-            else if (responses[i].status === 'UPDATED') { //updated response
+            else if (responses[i].status === 'UPDATED' || true) { //updated response
                 responses[i].status = '';
                 for (let j = 0; j < dbResponses.length; j++) {
                     if (dbResponses[j].question === responses[i].question) {
@@ -63,6 +63,7 @@ function LogDay(props) {
                         let localDate = dateToString(new Date(responses[i].date));
                         if (dbDate === localDate) {
                             console.log("@@@@@@ match found @@@@@@");
+                            console.log(responses[i]);
                             updateResponseAPIMethod(responses[i]);
                             break;
                         }
@@ -141,11 +142,15 @@ function LogDay(props) {
             date: date,
             nanoid: id,
             question: questionId,
-            status: 'UPDATED'
+            status: 'UPDATED' //keep disappearing
         }
         let newResponses = [];
         for (let i = 0; i < responses.length; i++) {
             if (responses[i].question === oldResponse.question) {
+                //newResponse.status = 'UPDATED';
+                newResponse.nanoid = responses[i].nanoid;
+                console.log("@@@ found @@@");
+                console.log(newResponse);
                 newResponses.push(newResponse);
             }
             else {
@@ -153,6 +158,8 @@ function LogDay(props) {
             }
         }
         setResponses(newResponses);
+        console.log(newResponse);
+        console.log(newResponses);
     }
 
     return (

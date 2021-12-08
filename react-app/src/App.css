@@ -231,6 +231,7 @@ button:hover {
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid darkgray;
+  visibility: ;
 }
 
 .Question {

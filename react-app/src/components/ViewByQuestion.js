@@ -303,7 +303,7 @@ function ViewByQuestion(props){
                       <button onClick={prev('date')}>
                           <h2>{"<"}</h2>
                       </button>
-                      <p>{currTextResponses? (currTextResponses[textResponsesIndex]? currTextResponses[textResponsesIndex].response.text:""): ""}</p>
+                      <p>{currTextResponses? (currTextResponses[textResponsesIndex]? currTextResponses[textResponsesIndex].response.text:"No response records"): ""}</p>
                       <button onClick={next('date')}>
                           <h2>{">"}</h2>
                       </button>
@@ -375,6 +375,8 @@ function ViewByQuestion(props){
                   </button>
               </div>
           </div>
+
+          {/*Multiple Choice Type*/}
 
           <div className="ViewDataH1">
               <h1>Multiple Choice type responses</h1>

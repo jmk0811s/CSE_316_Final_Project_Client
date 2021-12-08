@@ -6,15 +6,19 @@ import {
     createQuestionAPIMethod,
     deleteQuestionByIdAPIMethod,
     getQuestionsAPIMethod,
-    updateQuestionAPIMethod
+    updateQuestionAPIMethod,
+    deleteResponseByIdAPIMethod
 } from "../api/client";
 
 function EditQuestions(props){
     const [questions, setQuestions] = useState(props.questions);
+    const [responses, setResponses] = useState(props.responses);
+    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         setQuestions(props.questions);
-    }, [props.questions]);
+        setResponses(props.responses);
+    }, [props.questions, props.responses]);
 
     const handleSubmit = () => {
         getQuestionsAPIMethod().then((dbQuestions) => {
@@ -26,11 +30,17 @@ function EditQuestions(props){
                     createQuestionAPIMethod(questions[i]);
                 }
                 for (let j = 0; j < dbQuestions.length; j++) {
+                    let id = dbQuestions[j]._id;
                     if (dbQuestions[j].nanoid === questions[i].nanoid) {
                         if (questions[i].status === 'DELETED' && dbQuestions[j]._id !== undefined) {
                             console.log("question deleted");
-                            //questions.splice(i); //
-                            deleteQuestionByIdAPIMethod(dbQuestions[j]._id);
+                            deleteQuestionByIdAPIMethod(id);
+                            for (let k = 0; k < responses.length; k++) {
+                                if (responses[k].question === id) {
+                                    console.log("res deleted@@@@@");
+                                    deleteResponseByIdAPIMethod(responses[k]._id);
+                                }
+                            }
                         }
                         else {
                             console.log("question updated");

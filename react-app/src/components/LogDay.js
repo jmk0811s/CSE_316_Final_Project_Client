@@ -44,6 +44,8 @@ function LogDay(props) {
             for (let i = 0; i < responses.length; i++) {
                 if (responses[i].status === 'ADDED') { //newly added response
                     responses[i].status = '';
+                    console.log("to be added: ");
+                    console.log(responses[i]);
                     createResponseAPIMethod(responses[i]);
                 }
                 else if (responses[i].status === 'UPDATED') { //updated response

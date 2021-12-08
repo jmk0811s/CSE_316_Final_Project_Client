@@ -55,7 +55,9 @@ function LogDay(props) {
                 //console.log(responses[i]);
                 createResponseAPIMethod(responses[i]);
             }
-            else if (responses[i].status === 'UPDATED' || true) { //updated response
+            else if (responses[i].status === 'UPDATED') { //updated response
+                console.log("UPDATED");
+                console.log(responses[i]);
                 responses[i].status = '';
                 for (let j = 0; j < dbResponses.length; j++) {
                     if (dbResponses[j].question === responses[i].question) {

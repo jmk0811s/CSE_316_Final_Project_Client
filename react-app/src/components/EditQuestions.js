@@ -13,7 +13,6 @@ import {
 function EditQuestions(props){
     const [questions, setQuestions] = useState(props.questions);
     const [responses, setResponses] = useState(props.responses);
-    const [date, setDate] = useState(new Date());
 
     useEffect(() => {
         setQuestions(props.questions);

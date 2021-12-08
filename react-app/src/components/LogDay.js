@@ -13,6 +13,7 @@ import {dateToString, sortByDate} from "../utils/HelperFunctions";
 function LogDay(props) {
     const [questions, setQuestions] = useState(props.questions);
     const [responses, setResponses] = useState(props.responses);
+    const [dbResponses, setDBResponses] = useState();
     const [date, setDate] = useState(new Date());
 
     useEffect(() => {
@@ -21,7 +22,9 @@ function LogDay(props) {
         });
         getResponsesAPIMethod().then((responses) => {
             setResponses(responses);
+            setDBResponses(responses);
         });
+        //console.log("useEffect in LogDay");
     }, [props, date]);
 
     const next = () => {

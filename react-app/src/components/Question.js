@@ -62,8 +62,11 @@ function Question(props) {
 
     const updateQuestions = (newValue, field) => {
         let newQuestions = [];
+        let flag = true;
         for (let i = 0; i < questions.length; i++) {
+            console.log(questions[i].nanoid);
             if (questions[i].nanoid === nanoId) {
+                flag = false;
                 let newQuestion = {
                     type: field === 'type' ? newValue : type,
                     header: field === 'header' ? newValue : header,
@@ -79,7 +82,20 @@ function Question(props) {
                 newQuestions.push(questions[i]);
             }
         }
+        if (flag) {
+            let id = nanoid()
+            let newQuestion = {
+                type: field === 'type' ? newValue : type,
+                header: field === 'header' ? newValue : header,
+                choices: field === 'multiple_choice' ? newValue : choices,
+                mdate: new Date(),
+                nanoid: id,
+                status: 'ADDED'
+            }
+            newQuestions.push(newQuestion);
+        }
         props.setQuestions(newQuestions);
+        console.log(newQuestions);
         //console.log("updated@");
     }
 

@@ -22,8 +22,12 @@ function ViewByQuestion(props){
     const [textQuestionIndex, setTextQuestionIndex] = useState(0);
     const [currTextResponses, setCurrTextResponses] = useState();
 
+
     const [numberQuestion, setNumberQuestion] = useState();
     const [numberResponses, setNumberResponses] = useState();
+    //newly added
+    const [numberQuestionIndex, setNumberQuestionIndex] = useState(0);
+    const [currNumberResponses, setCurrNumberResponses] = useState();
 
     const [booleanQuestion, setBooleanQuestion] = useState();
     const [booleanResponses, setBooleanResponses] = useState();
@@ -33,34 +37,35 @@ function ViewByQuestion(props){
         setResponses(props.responses);
         if(props.questions){
             setTextQuestion(filterOnly(props.questions, "textQuestion"))
-
             setNumberQuestion(filterOnly(props.questions, "numberQuestion"))
             setBooleanQuestion(filterOnly(props.questions, "booleanQuestion"))
         }
         if(props.responses){
             setTextResponses(sortByDate(filterOnly(props.responses, "textResponse")));
-
-
             setNumberResponses(sortByDate2(filterOnly(props.responses, "numberResponse")));
             setBooleanResponses(sortByDate2(filterOnly(props.responses, "booleanResponse")));
         }
     },[props.responses, props.questions])
 
     useEffect(()=>{
-        // console.log(textQuestion[textQuestionIndex]);
         if(textQuestion){
-            // console.log("1PASS")
             if(textQuestion[textQuestionIndex] && textResponses){
-                // console.log("2PASS")
-                // console.log(textResponses)
-                // console.log(textQuestion[textQuestionIndex]._id)
-                // console.log(filterById(textResponses, textQuestion[textQuestionIndex]._id))
                 setCurrTextResponses(filterById(textResponses, textQuestion[textQuestionIndex]._id));
             }
         }
     },[textResponses, textQuestion])
 
-    console.log(currTextResponses)
+    useEffect(()=>{
+        if(numberQuestion){
+            if(numberQuestion[numberQuestionIndex]&& numberResponses){
+                setCurrNumberResponses(filterById(numberResponses, numberQuestion[numberQuestionIndex]._id));
+            }
+        }
+    },[numberResponses, numberQuestion])
+
+    // console.log(currTextResponses)
+    console.log(currNumberResponses)
+    console.log(numberQuestion)
 
     //최신날짜 = 0번째
     const sortByDate = (list) => {
@@ -123,6 +128,12 @@ function ViewByQuestion(props){
                 setTextResponsesIndex(0);
             }
         }
+        else if(prop === 'number'){
+            if(numberQuestionIndex < numberQuestion.length-1){
+                setCurrNumberResponses(filterById(numberResponses, numberQuestion[numberQuestionIndex+1]._id));
+                setNumberQuestionIndex(numberQuestionIndex+1)
+            }
+        }
     }
     const next = (prop)=>()=> {
         if(prop==='date'){
@@ -137,6 +148,12 @@ function ViewByQuestion(props){
                 setTextQuestionIndex(textQuestionIndex-1)
                 console.log(textQuestionIndex)
                 setTextResponsesIndex(0);
+            }
+        }
+        else if(prop === 'number'){
+            if(numberQuestionIndex >0){
+                setCurrNumberResponses(filterById(numberResponses, numberQuestion[numberQuestionIndex-1]._id));
+                setNumberQuestionIndex(numberQuestionIndex-1);
             }
         }
     }
@@ -162,10 +179,10 @@ function ViewByQuestion(props){
               <h1>Text type responses</h1>
           </div>
           <div className="TextQuestionData">
-              <div className="LogSelectionBar" style={{display: "flex", flexDirection: 'row',justifyContent: "space-between"}}>
+              <div className="LogSelectionBar" style={{textAlign: 'center'}}>
                   <h2>
                       {/*{textResponses? (textResponses[textResponsesIndex]?textResponses[textResponsesIndex].date:"") : ""}*/}
-                      {currTextResponses? (currTextResponses[textResponsesIndex]?currTextResponses[textResponsesIndex].date:"") : ""}
+                      {currTextResponses? (currTextResponses[textResponsesIndex]?dateToString(new Date(currTextResponses[textResponsesIndex].date)):"") : ""}
                   </h2>
               </div>
               <div className="TextQuestionDataView" style={{marginBottom: 0}}>
@@ -196,22 +213,31 @@ function ViewByQuestion(props){
           </div>
 
           <div className="NumberQuestionData">
-              <h2>{numberQuestion? (numberQuestion[0]? numberQuestion[0].header:""): ""}</h2>
+              <h2>{numberQuestion? (numberQuestion[numberQuestionIndex]? numberQuestion[numberQuestionIndex].header:""): ""}</h2>
 
-              <ResponsiveContainer width="100%" height={400}>
-                  <LineChart
-                      width={900}
-                      height={400}
-                      data={numberResponses? numberResponses : []}
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                      <XAxis dataKey="date" />
-                      <YAxis dataKey="response.number"/>
-                      <Tooltip />
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <Line type="monotone" dataKey="response.number" stroke="#8884d8"  />
-                  </LineChart>
-              </ResponsiveContainer>
+              <div className="LogSelectionBar" style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <button onClick={prev('number')}>
+                      <h2>{"<"}</h2>
+                  </button>
+                  <ResponsiveContainer width="100%" height={400}>
+                      <LineChart
+                          width={900}
+                          height={400}
+                          data={currNumberResponses? currNumberResponses : []}
+                          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                      >
+                          <XAxis dataKey="date" />
+                          <YAxis dataKey="response.number"/>
+                          <Tooltip />
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <Line type="monotone" dataKey="response.number" stroke="#8884d8"  />
+                      </LineChart>
+                  </ResponsiveContainer>
+                  <button onClick={next('number')}>
+                      <h2>{">"}</h2>
+                  </button>
+              </div>
+
 
           </div>
 

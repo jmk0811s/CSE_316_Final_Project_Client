@@ -31,6 +31,8 @@ function ViewByQuestion(props){
 
     const [booleanQuestion, setBooleanQuestion] = useState();
     const [booleanResponses, setBooleanResponses] = useState();
+    const [booleanQuestionIndex, setBooleanQuestionIndex] = useState(0);
+    const [currBooleanResponses, setCurrBooleanResponses] = useState();
 
     useEffect(()=>{
         setQuestions(props.questions);
@@ -63,9 +65,22 @@ function ViewByQuestion(props){
         }
     },[numberResponses, numberQuestion])
 
+    useEffect(()=>{
+        console.log('useEffect')
+        if(booleanQuestion){
+            // console.log('PASS1')
+            // console.log(booleanQuestion)
+            // console.log(booleanQuestion[booleanQuestionIndex])
+            if(booleanQuestion[booleanQuestionIndex] && booleanResponses){
+                setCurrBooleanResponses(boolDataGen()); //here
+                // console.log('PASS2')
+            }
+        }
+    },[booleanResponses,booleanQuestion,booleanQuestionIndex])
+
     // console.log(currTextResponses)
-    console.log(currNumberResponses)
-    console.log(numberQuestion)
+    // console.log(currNumberResponses)
+    // console.log(numberQuestion)
 
     //최신날짜 = 0번째
     const sortByDate = (list) => {
@@ -98,6 +113,28 @@ function ViewByQuestion(props){
     }
     const filterById = (list, id) => {
         return list.filter(r=> r.question===id);
+    }
+
+    const boolDataGen = () =>{
+        let t = 0;
+        let f = 0;
+        let curr = filterById(booleanResponses, booleanQuestion[booleanQuestionIndex]._id);
+        curr.map((r)=>{
+            if(r.response.boolean){
+                t++;
+            }
+            else{
+                f++;
+            }
+        })
+        console.log(t);
+        console.log(f);
+        let temp = [{
+            "name": booleanQuestion[booleanQuestionIndex].header,
+            "True": t,
+            "False": f
+        }]
+        return temp;
     }
 
 
@@ -134,6 +171,11 @@ function ViewByQuestion(props){
                 setNumberQuestionIndex(numberQuestionIndex+1)
             }
         }
+        else if(prop === 'boolean'){
+            if(booleanQuestionIndex < booleanQuestion.length-1){
+                setBooleanQuestionIndex(booleanQuestionIndex+1);
+            }
+        }
     }
     const next = (prop)=>()=> {
         if(prop==='date'){
@@ -156,15 +198,23 @@ function ViewByQuestion(props){
                 setNumberQuestionIndex(numberQuestionIndex-1);
             }
         }
+        else if(prop === 'boolean'){
+            if(booleanQuestionIndex >0){
+                setBooleanQuestionIndex(booleanQuestionIndex-1);
+            }
+        }
     }
 
-    console.log(responses)
+    // console.log(responses)
     // console.log(textResponses)
-    console.log(questions)
-    console.log(numberQuestion)
-    console.log(numberResponses)
-    console.log(textQuestion)
-    // console.log(booleanResponses)
+    // console.log(questions)
+    // console.log(numberQuestion)
+    // console.log(numberResponses)
+    // console.log(textQuestion)
+    console.log(booleanQuestion)
+    console.log(booleanResponses)
+    console.log(currBooleanResponses)
+    console.log(currBooleanResponses[0])
 
 
 
@@ -247,22 +297,29 @@ function ViewByQuestion(props){
               <h1>Boolean type responses</h1>
           </div>
           <div className="BooleanQuestionData">
-              <h2>{booleanQuestion? (booleanQuestion[0]? booleanQuestion[0].header: ""): ""}</h2>
-              <ResponsiveContainer width="100%" height={400}>
-                  <BarChart
-                      width={730}
-                      height={250}
-                      data={booleanResponses?booleanResponses: []}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Legend />
-                      <Bar dataKey="response.boolean" fill="#8884d8" />
-                      <Bar dataKey="uv" fill="#82ca9d" />
-                  </BarChart>
-              </ResponsiveContainer>
-
+              <h2>{booleanQuestion? (booleanQuestion[booleanQuestionIndex]? booleanQuestion[booleanQuestionIndex].header: ""): ""}</h2>
+              <div className="LogSelectionBar" style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <button onClick={prev('boolean')}>
+                      <h2>{"<"}</h2>
+                  </button>
+                  <ResponsiveContainer width="100%" height={400}>
+                      <BarChart
+                          width={730}
+                          height={250}
+                          data={currBooleanResponses?currBooleanResponses: []}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="True" fill="#8884d8" />
+                          <Bar dataKey="False" fill="#82ca9d" />
+                      </BarChart>
+                  </ResponsiveContainer>
+                  <button onClick={next('boolean')}>
+                      <h2>{">"}</h2>
+                  </button>
+              </div>
           </div>
 
 

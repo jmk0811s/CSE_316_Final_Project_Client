@@ -253,7 +253,7 @@ button:hover {
 .radio-input:focus{
   outline: none;
 }
-.TextQuestionData, .NumberQuestionData, .BooleanQuestionData{
+.TextQuestionData, .NumberQuestionData, .BooleanQuestionData, .MultipleChoiceQuestionData{
   background-color: var(--standardBackgroundColor);
   padding: 10px;
   border-radius: 20px;

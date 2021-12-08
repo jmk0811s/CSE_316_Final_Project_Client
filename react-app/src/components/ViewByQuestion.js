@@ -34,6 +34,13 @@ function ViewByQuestion(props){
     const [booleanQuestionIndex, setBooleanQuestionIndex] = useState(0);
     const [currBooleanResponses, setCurrBooleanResponses] = useState();
 
+    //newly added
+    const [multipleQuestion, setMultipleQuestion] = useState();
+    const [multipleResponses, setMultipleResponses] = useState();
+    const [multipleQuestionIndex, setMultipleQuestionIndex] = useState(0);
+    const [currMultipleResponses, setCurrMultipleResponses] = useState();
+
+
     useEffect(()=>{
         setQuestions(props.questions);
         setResponses(props.responses);
@@ -41,11 +48,15 @@ function ViewByQuestion(props){
             setTextQuestion(filterOnly(props.questions, "textQuestion"))
             setNumberQuestion(filterOnly(props.questions, "numberQuestion"))
             setBooleanQuestion(filterOnly(props.questions, "booleanQuestion"))
+            //newly added
+            setMultipleQuestion(filterOnly(props.questions, 'multipleQuestion'))
         }
         if(props.responses){
             setTextResponses(sortByDate(filterOnly(props.responses, "textResponse")));
             setNumberResponses(sortByDate2(filterOnly(props.responses, "numberResponse")));
             setBooleanResponses(sortByDate2(filterOnly(props.responses, "booleanResponse")));
+            //newly added
+            setMultipleResponses(sortByDate2(filterOnly(props.responses, 'multipleResponse')))
         }
     },[props.responses, props.questions])
 
@@ -66,17 +77,20 @@ function ViewByQuestion(props){
     },[numberResponses, numberQuestion])
 
     useEffect(()=>{
-        console.log('useEffect')
         if(booleanQuestion){
-            // console.log('PASS1')
-            // console.log(booleanQuestion)
-            // console.log(booleanQuestion[booleanQuestionIndex])
             if(booleanQuestion[booleanQuestionIndex] && booleanResponses){
-                setCurrBooleanResponses(boolDataGen()); //here
-                // console.log('PASS2')
+                setCurrBooleanResponses(boolDataGen());
             }
         }
     },[booleanResponses,booleanQuestion,booleanQuestionIndex])
+
+    useEffect(()=>{
+        if(multipleQuestion){
+            if(multipleQuestion[multipleQuestionIndex] && multipleResponses){
+                setCurrMultipleResponses(multDataGen());
+            }
+        }
+    }, [multipleResponses,multipleQuestion, multipleQuestionIndex])
 
     // console.log(currTextResponses)
     // console.log(currNumberResponses)
@@ -110,6 +124,14 @@ function ViewByQuestion(props){
         else if(prop === "booleanQuestion"){
             return list.filter(r=> r.type === "Boolean");
         }
+
+        //newly added
+        else if(prop === "multipleResponse"){
+            return list.filter(r=> r.response.multiple_choice.length !== 0);
+        }
+        else if(prop === "multipleQuestion"){
+            return list.filter(r=> r.type === "MultipleChoice");
+        }
     }
     const filterById = (list, id) => {
         return list.filter(r=> r.question===id);
@@ -137,14 +159,36 @@ function ViewByQuestion(props){
         return temp;
     }
 
+    const multDataGen = () =>{
+        let c1 = 0;
+        let c2 = 0;
+        let c3 = 0;
 
-    // let sortedList;
-    //---------------for testing---------------------
-    // if(responses){
-    //     let sortedList = sortByDate(responses);
-    //     console.log(sortedList)
-    //     console.log(sortedList[textQuestionsIndex].date)
-    // }
+        let curr = filterById(multipleResponses, multipleQuestion[multipleQuestionIndex]._id);
+        curr.map((r)=>{
+            if(r.response.multiple_choice[0]){
+                c1++;
+            }
+            else if(r.response.multiple_choice[1]){
+                c2++;
+            }
+            else{
+                c3++;
+            }
+        })
+        let t1 = multipleQuestion[multipleQuestionIndex].choices[0];
+        let t2 = multipleQuestion[multipleQuestionIndex].choices[1];
+        let t3 = multipleQuestion[multipleQuestionIndex].choices[2];
+        let temp = [{
+            "name": multipleQuestion[multipleQuestionIndex].header,
+            "choice 1" : c1,
+            "choice 2" : c2,
+            "choice 3" : c3
+        }]
+        return temp;
+    }
+    console.log(multipleQuestion);
+    console.log(multipleResponses);
 
     const dateToString = (date) => {
         return date.getFullYear() + " / " + (date.getMonth() + 1) + " / " + date.getDate();
@@ -176,6 +220,11 @@ function ViewByQuestion(props){
                 setBooleanQuestionIndex(booleanQuestionIndex+1);
             }
         }
+        else if(prop === 'multiple'){
+            if(multipleQuestionIndex < multipleQuestion.length-1){
+                setMultipleQuestionIndex(multipleQuestionIndex+1);
+            }
+        }
     }
     const next = (prop)=>()=> {
         if(prop==='date'){
@@ -203,6 +252,11 @@ function ViewByQuestion(props){
                 setBooleanQuestionIndex(booleanQuestionIndex-1);
             }
         }
+        else if(prop === 'multiple'){
+            if(multipleQuestionIndex >0){
+                setMultipleQuestionIndex(multipleQuestionIndex-1);
+            }
+        }
     }
 
     // console.log(responses)
@@ -211,9 +265,9 @@ function ViewByQuestion(props){
     // console.log(numberQuestion)
     // console.log(numberResponses)
     // console.log(textQuestion)
-    console.log(booleanQuestion)
-    console.log(booleanResponses)
-    console.log(currBooleanResponses)
+    // console.log(booleanQuestion)
+    // console.log(booleanResponses)
+    // console.log(currBooleanResponses)
     //console.log(currBooleanResponses[0])
 
 
@@ -317,6 +371,36 @@ function ViewByQuestion(props){
                       </BarChart>
                   </ResponsiveContainer>
                   <button onClick={next('boolean')}>
+                      <h2>{">"}</h2>
+                  </button>
+              </div>
+          </div>
+
+          <div className="ViewDataH1">
+              <h1>Multiple Choice type responses</h1>
+          </div>
+          <div className="MultipleChoiceQuestionData">
+              <h2>{multipleQuestion? (multipleQuestion[multipleQuestionIndex]? multipleQuestion[multipleQuestionIndex].header: ""): ""}</h2>
+              <div className="LogSelectionBar" style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between'}}>
+                  <button onClick={prev('multiple')}>
+                      <h2>{"<"}</h2>
+                  </button>
+                  <ResponsiveContainer width="100%" height={400}>
+                      <BarChart
+                          width={730}
+                          height={250}
+                          data={currMultipleResponses?currMultipleResponses: []}>
+                          <CartesianGrid strokeDasharray="3 3" />
+                          <XAxis dataKey="name" />
+                          <YAxis />
+                          <Tooltip />
+                          <Legend />
+                          <Bar dataKey="choice 1" name = {multipleQuestion? (multipleQuestion[multipleQuestionIndex]? multipleQuestion[multipleQuestionIndex].choices[0]:""): "" } fill="#8884d8" />
+                          <Bar dataKey="choice 2" name = {multipleQuestion? (multipleQuestion[multipleQuestionIndex]? multipleQuestion[multipleQuestionIndex].choices[1]:""): "" } fill="#82ca9d" />
+                          <Bar dataKey="choice 3" name = {multipleQuestion? (multipleQuestion[multipleQuestionIndex]? multipleQuestion[multipleQuestionIndex].choices[2]:""): "" } fill="#ffc658" />
+                      </BarChart>
+                  </ResponsiveContainer>
+                  <button onClick={next('multiple')}>
                       <h2>{">"}</h2>
                   </button>
               </div>

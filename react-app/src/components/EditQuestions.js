@@ -11,55 +11,61 @@ import {
 } from "../api/client";
 
 function EditQuestions(props){
+    const [dbQuestions, setDBQuestions] = useState([]);
     const [questions, setQuestions] = useState(props.questions);
     const [responses, setResponses] = useState(props.responses);
 
     useEffect(() => {
-        setQuestions(props.questions);
-        setResponses(props.responses);
-    }, [props.questions, props.responses]);
+        getQuestionsAPIMethod().then((questions) => {
+            setDBQuestions(questions);
+            setQuestions(questions);
+        });
+    }, []);
 
     const handleSubmit = () => {
-        getQuestionsAPIMethod().then((dbQuestions) => {
-            console.log(questions);
-            for (let i = 0; i < questions.length; i++) {
-                if (questions[i].status === 'ADDED') {
-                    console.log("question added");
-                    questions[i].status = '';
-                    createQuestionAPIMethod(questions[i]);
-                }
-                for (let j = 0; j < dbQuestions.length; j++) {
-                    let id = dbQuestions[j]._id;
-                    if (dbQuestions[j].nanoid === questions[i].nanoid) {
-                        if (questions[i].status === 'DELETED' && dbQuestions[j]._id !== undefined) {
-                            console.log("question deleted");
-                            deleteQuestionByIdAPIMethod(id);
-                            for (let k = 0; k < responses.length; k++) {
-                                if (responses[k].question === id) {
-                                    console.log("res deleted@@@@@");
-                                    deleteResponseByIdAPIMethod(responses[k]._id);
-                                }
+        console.log("DB questions: ");
+        console.log(dbQuestions);
+        console.log("local questions: ");
+        console.log(questions);
+
+        for (let i = 0; i < questions.length; i++) {
+            if (questions[i].status === 'ADDED') {
+                console.log("ADDED");
+                questions[i].status = '';
+                createQuestionAPIMethod(questions[i]);
+            }
+            for (let j = 0; j < dbQuestions.length; j++) {
+                if (dbQuestions[j].nanoid === questions[i].nanoid) {
+                    if (questions[i].status === 'DELETED' && dbQuestions[j]._id !== undefined) {
+                        console.log("DELETED");
+                        deleteQuestionByIdAPIMethod(dbQuestions[j]._id);
+                        for (let k = 0; k < responses.length; k++) {
+                            if (responses[k].question === dbQuestions[j]._id) {
+                                console.log("res deleted@@@@@");
+                                deleteResponseByIdAPIMethod(responses[k]._id);
                             }
                         }
-                        else {
-                            console.log("question updated");
-                            let newQuestion = {
-                                _id: dbQuestions[j]._id,
-                                type: questions[i].type,
-                                header: questions[i].header,
-                                choices: questions[i].choices,
-                                mdate: questions[i].mdate,
-                                nanoid: questions[i].nanoid,
-                                creator: questions[i].creator
-                            }
-                            updateQuestionAPIMethod(newQuestion);
+                    }
+                    else {
+                        console.log("UPDATED");
+                        let newQuestion = {
+                            _id: questions[i]._id,
+                            type: questions[i].type,
+                            header: questions[i].header,
+                            choices: questions[i].choices,
+                            mdate: questions[i].mdate,
+                            nanoid: questions[i].nanoid,
+                            creator: questions[i].creator
                         }
+                        updateQuestionAPIMethod(newQuestion);
                     }
                 }
             }
-        });
+        }
         let newQuestions = questions.filter((question) => question.status !== 'DELETED');
         props.setQuestions(sortByDate(newQuestions));
+        console.log("submit completed");
+        console.log(newQuestions);
     }
 
     const addQuestion = () => {
@@ -72,21 +78,47 @@ function EditQuestions(props){
             nanoid: id,
             status: 'ADDED'
         }
-        let newQuestions = [...questions];
+        let newQuestions = [];
+        for (let i = 0; i < questions.length; i++) {
+            newQuestions.push(questions[i]);
+        }
         newQuestions.push(newQuestion);
         setQuestions(newQuestions);
-        //console.log("added: " + id);
+        console.log("question added - edit questions page");
+        console.log(newQuestions);
     }
 
     const deleteQuestion = (nanoid) => {
-        let newQuestions = [...questions];
-        for (let i = 0; i < newQuestions.length; i++) {
-            if (newQuestions[i].nanoid === nanoid) {
-                newQuestions[i].status = 'DELETED';
-                //console.log("deleted: " + nanoid);
+        let newQuestions = [];
+        for (let i = 0; i < questions.length; i++) {
+            newQuestions.push(questions[i]);
+            if (questions[i].nanoid === nanoid) {
+                questions[i].status = 'DELETED';
+                newQuestions.push(questions[i]);
             }
         }
         setQuestions(newQuestions);
+        console.log("question deleted - edit questions page");
+        console.log(newQuestions);
+    }
+
+    const updateQuestion = (newValue, field, index) => {
+        let newQuestions = [];
+        console.log(questions);
+        for (let i = 0; i < questions.length; i++) {
+            newQuestions.push(questions[i]);
+        }
+        if (field === 'type') {
+            newQuestions[index].type = newValue;
+        }
+        else if (field === 'header') {
+            newQuestions[index].header = newValue;
+        }
+        else if (field === 'multiple_choice') {
+            newQuestions[index].choices = newValue;
+        }
+        setQuestions(newQuestions);
+        console.log(newQuestions);
     }
 
     return (
@@ -99,7 +131,7 @@ function EditQuestions(props){
             </div>
             {
                 questions ?
-                    questions.filter((question) => question.status !== 'DELETED').map((question) =>
+                    questions.filter((question) => question.status !== 'DELETED').map((question, i) =>
                         <li className="question-wrapper" style={{listStyle: "none", padding: "5px"}}>
                             <Question
                                 editMode={true}
@@ -113,6 +145,8 @@ function EditQuestions(props){
                                 setQuestions={setQuestions}
                                 responses={props.responses.filter((res) => res.question === question._id)}
                                 deleteQuestion={deleteQuestion}
+                                updateQuestion={updateQuestion}
+                                index={i}
                             />
                         </li>
                     )

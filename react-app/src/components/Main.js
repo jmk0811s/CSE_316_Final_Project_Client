@@ -9,7 +9,8 @@ import {sortByDate} from "../utils/HelperFunctions";
 import {
     logoutUserAPIMethod,
     getQuestionsAPIMethod,
-    getResponsesAPIMethod
+    getResponsesAPIMethod,
+    deleteResponseByIdAPIMethod
 } from "../api/client.js";
 
 function Main(props) {
@@ -50,6 +51,14 @@ function Main(props) {
         setCurrUser(props.currUser)
     }, [props])
 
+    const deleteResponses = () => {
+        getResponsesAPIMethod().then((responses) => {
+            responses.map((res) => {
+                deleteResponseByIdAPIMethod(res._id);
+            });
+        });
+    }
+
     return (
         <div className="Main">
             <div className= "MenuBar" >
@@ -64,6 +73,10 @@ function Main(props) {
 
                 <button className={"ProfileImg"} onClick={() => setCurrentPage("Profile")} >
                     <img src= {imgURL? imgURL:'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
+                </button>
+
+                <button onClick={deleteResponses}>
+                    Delete Response Test Button
                 </button>
 
             </div>

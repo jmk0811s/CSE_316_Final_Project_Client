@@ -9,11 +9,12 @@ import {
 } from "../api/client";
 
 import {dateToString, sortByDate} from "../utils/HelperFunctions";
+import {nanoid} from "nanoid";
 
 function LogDay(props) {
     const [questions, setQuestions] = useState(props.questions);
     const [responses, setResponses] = useState(props.responses);
-    const [dbResponses, setDBResponses] = useState();
+    const [dbResponses, setDBResponses] = useState([]);
     const [date, setDate] = useState(new Date());
 
     useEffect(() => {
@@ -42,34 +43,116 @@ function LogDay(props) {
     }
 
     const handleSubmit = () => {
-        getResponsesAPIMethod().then((dbResponses) => {
-            console.log(dbResponses);
-            for (let i = 0; i < responses.length; i++) {
-                if (responses[i].status === 'ADDED') { //newly added response
-                    responses[i].status = '';
-                    console.log("to be added: ");
-                    console.log(responses[i]);
-                    createResponseAPIMethod(responses[i]);
-                }
-                else if (responses[i].status === 'UPDATED') { //updated response
-                    responses[i].status = '';
-                    for (let j = 0; j < dbResponses.length; j++) {
-                        if (dbResponses[j].question === responses[i].question) {
-                            let dbDate = dateToString(new Date(dbResponses[j].date));
-                            let localDate = dateToString(new Date(responses[i].date));
-                            if (dbDate === localDate) {
-                                updateResponseAPIMethod(responses[i]);
-                            }
+        console.log("DB responses: ");
+        console.log(dbResponses);
+        console.log("local responses: ");
+        console.log(responses);
+
+        for (let i = 0; i < responses.length; i++) {
+            if (responses[i].status === 'ADDED') { //newly added response
+                responses[i].status = '';
+                console.log("ADDED");
+                //console.log(responses[i]);
+                createResponseAPIMethod(responses[i]);
+            }
+            else if (responses[i].status === 'UPDATED') { //updated response
+                responses[i].status = '';
+                for (let j = 0; j < dbResponses.length; j++) {
+                    if (dbResponses[j].question === responses[i].question) {
+                        let dbDate = dateToString(new Date(dbResponses[j].date));
+                        let localDate = dateToString(new Date(responses[i].date));
+                        if (dbDate === localDate) {
+                            console.log("@@@@@@ match found @@@@@@");
+                            updateResponseAPIMethod(responses[i]);
+                            break;
                         }
                     }
                 }
-                if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice == 0) {
-                    //empty response
-                    console.log("empty response deleted");
-                    deleteResponseByIdAPIMethod(responses[i]._id);
+            }
+            if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice == 0) {
+                //empty response
+                console.log("empty response deleted");
+                deleteResponseByIdAPIMethod(responses[i]._id);
+            }
+        }
+    }
+
+    const addResponse = (res, type, index, choices, currResponse, questionId) => {
+        let newChoiceList = [];
+        if (type === 'MultipleChoice') {
+            for (let i = 0; i < choices.length; i++) {
+                if (index === i) {
+                    newChoiceList.push(true);
+                }
+                else {
+                    newChoiceList.push(false);
                 }
             }
-        })
+        }
+        let id = nanoid();
+        let newResponse = {
+            response: {
+                text: type === 'Text' ? res+="" : '',
+                number: type === 'Number' ? res*=1 : null,
+                boolean: type === 'Boolean' ? JSON.parse(res) : null,
+                multiple_choice: type === 'MultipleChoice' ? newChoiceList : []
+            },
+            date: date,
+            nanoid: id,
+            question: questionId,
+            status: 'ADDED'
+        }
+        let newResponses = [];
+        for (let i = 0; i < responses.length; i++) {
+            newResponses.push(responses[i]);
+        }
+        newResponses.push(newResponse);
+        setResponses(newResponses);
+    }
+
+    const updateResponse = (res, type, index, choices, currResponse, questionId) => {
+        let oldResponse = currResponse;
+        if (oldResponse === undefined) {
+            addResponse(res, type, index, choices, currResponse, questionId);
+            console.log("response added");
+            return;
+        }
+        console.log("response updated");
+        let newChoiceList = [];
+        if (type === 'MultipleChoice') {
+            for (let i = 0; i < choices.length; i++) {
+                if (index === i) {
+                    newChoiceList.push(true);
+                }
+                else {
+                    newChoiceList.push(false);
+                }
+            }
+        }
+        let id = nanoid();
+        let newResponse = {
+            _id: oldResponse._id,
+            response: {
+                text: type === 'Text' ? res+="" : '',
+                number: type === 'Number' ? res*=1 : null,
+                boolean: type === 'Boolean' ? JSON.parse(res) : null,
+                multiple_choice: type === 'MultipleChoice' ? newChoiceList : []
+            },
+            date: date,
+            nanoid: id,
+            question: questionId,
+            status: 'UPDATED'
+        }
+        let newResponses = [];
+        for (let i = 0; i < responses.length; i++) {
+            if (responses[i].question === oldResponse.question) {
+                newResponses.push(newResponse);
+            }
+            else {
+                newResponses.push(responses[i]);
+            }
+        }
+        setResponses(newResponses);
     }
 
     return (
@@ -103,6 +186,7 @@ function LogDay(props) {
                                 questionId={question._id}
                                 setResponses={setResponses}
                                 date={date}
+                                updateResponse={updateResponse}
                             />
                         </li>
                     )

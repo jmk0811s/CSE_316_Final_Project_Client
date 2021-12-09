@@ -1,3 +1,30 @@
+
+# How to build the app
+
+You can build and run the app with 'npm start' command.
+
+# How to run unit tests
+
+You can run unit tests with 'npm test' command.
+
+# User account with sample data
+
+email: testAccount@test.com
+pw: Test1234
+
+# URLs
+Client:   https://github.com/jmk0811s/CSE_316_Final_Project_Client
+Server:   https://github.com/jmk0811s/CSE_316_Final_Project_Server
+Netlify:  https://61b1b5fdf4b88600081e4278--optimistic-torvalds-7323fb.netlify.app/
+Heroku:   https://cse-316-final-project.herokuapp.com/
+
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

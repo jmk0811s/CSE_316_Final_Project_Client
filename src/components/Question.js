@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {nanoid} from 'nanoid';
 import {getQuestionsAPIMethod, getResponsesAPIMethod} from "../api/client";
-import {sortByDate} from "../utils/HelperFunctions";
+import {dateToString, sortByDate} from "../utils/HelperFunctions";
 
 function Question(props) {
     const [readOnly, setReadOnly] = useState(false);
@@ -31,7 +31,7 @@ function Question(props) {
         setQuestionId(props.questionId);
         setReadOnly(props.readOnly);
         setIndex(props.index);
-        console.log(currResponse);
+        //console.log(currResponse);
     }, [props]);
 
     useEffect(() => {
@@ -43,7 +43,8 @@ function Question(props) {
             (
                 res.date === date
                 ||
-                res.date.toString().split('T')[0] === props.date.toISOString().split('T')[0]
+                dateToString(new Date(res.date)) === dateToString(new Date(props.date))
+                //res.date.toString().split('T')[0] === props.date.toISOString().split('T')[0]
             )
         )
         setCurrResponse(res);

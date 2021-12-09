@@ -59,17 +59,28 @@ function LogDay(props) {
                 console.log("UPDATED");
                 console.log(responses[i]);
                 responses[i].status = '';
+                let flag = false;
                 for (let j = 0; j < dbResponses.length; j++) {
                     if (dbResponses[j].question === responses[i].question) {
+                        console.log("@@@ question id match @@@");
                         let dbDate = dateToString(new Date(dbResponses[j].date));
                         let localDate = dateToString(new Date(responses[i].date));
+                        console.log(dbDate);
+                        console.log(localDate);
                         if (dbDate === localDate) {
-                            console.log("@@@@@@ match found @@@@@@");
+                            console.log(" @@@date match @@@");
                             console.log(responses[i]);
                             updateResponseAPIMethod(responses[i]);
+                            flag = true;
                             break;
                         }
                     }
+                }
+                if (!flag) {
+                    console.log("ADDED");
+                    console.log(responses[i]);
+                    responses[i].status = '';
+                    createResponseAPIMethod(responses[i]);
                 }
             }
             if (responses[i].response.text === '' && responses[i].response.number === null && responses[i].response.boolean === null && responses[i].response.multiple_choice == 0) {
@@ -132,9 +143,9 @@ function LogDay(props) {
                 }
             }
         }
-        console.log("new choice list: ")
-        console.log(newChoiceList);
-        console.log(index);
+        //console.log("new choice list: ")
+        //console.log(newChoiceList);
+        //console.log(index);
         let id = nanoid();
         let newResponse = {
             _id: oldResponse._id,
@@ -154,8 +165,8 @@ function LogDay(props) {
             if (responses[i].question === oldResponse.question) {
                 //newResponse.status = 'UPDATED';
                 newResponse.nanoid = responses[i].nanoid;
-                console.log("@@@ found @@@");
-                console.log(newResponse);
+                //console.log("@@@ found @@@");
+                //console.log(newResponse);
                 newResponses.push(newResponse);
             }
             else {

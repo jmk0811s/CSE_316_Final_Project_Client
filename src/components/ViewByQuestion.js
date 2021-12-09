@@ -447,7 +447,7 @@ function ViewByQuestion(props){
           <div className="ViewDataH1">
               <h1>Multiple Choice type responses</h1>
           </div>
-          <div className="MultipleChoiceQuestionData">
+          <div className="MultipleChoiceQuestionData" style={{marginBottom:"50px"}}>
               <h2>{multipleQuestion? (multipleQuestion[multipleQuestionIndex]? multipleQuestion[multipleQuestionIndex].header: ""): ""}</h2>
               <div className="LogSelectionBar" style={{display: 'flex',flexDirection: 'row', justifyContent: 'space-between'}}>
                   <button onClick={prev('multiple')}>

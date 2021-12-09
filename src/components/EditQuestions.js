@@ -157,7 +157,7 @@ function EditQuestions(props){
                     )
                     : <></>
             }
-            <div className="SubmitButton">
+            <div className="SubmitButton" style={{marginBottom:"50px", marginTop:"10px"}}>
                 <button onClick={handleSubmit}>Save</button>
             </div>
         </div>

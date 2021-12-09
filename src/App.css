@@ -40,6 +40,7 @@ button:hover {
   display: flex;
   justify-content: space-between;
   background-color: var(--standardBackgroundColor);
+  height: 70px;
 }
 .Menus button{
   border: none;
@@ -131,6 +132,9 @@ button:hover {
   height: 35px;
   border: none;
   cursor: pointer;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 .ProfileTabs input{
   border: 1px solid darkgray;

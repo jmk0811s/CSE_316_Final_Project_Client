@@ -204,7 +204,7 @@ function LogDay(props) {
                     )
                     : <></>
             }
-            <div className="SubmitButton" >
+            <div className="SubmitButton" style={{marginBottom:"50px", marginTop:"10px"}}>
                 <button onClick={handleSubmit}>Submit</button>
             </div>
         </div>

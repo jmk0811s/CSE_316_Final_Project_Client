@@ -51,7 +51,7 @@ function Login(props){
                            value = {email}
                            onChange={(e) => setEmail(e.target.value)}></input>
                     <p>Password</p>
-                    <input type="text"
+                    <input type="password"
                            id="Password"
                            name="Password"
                            value = {password}

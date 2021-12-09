@@ -231,7 +231,6 @@ button:hover {
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid darkgray;
-  visibility: ;
 }
 
 .Question {
@@ -275,6 +274,26 @@ button:hover {
 }
 .ViewDataH1{
   width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.downloads {
+  width: 20%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.downloads button{
+  background-color: transparent;
+  margin-bottom: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  /*border-top: hidden;*/
+  /*border-right: hidden;*/
+  /*border-left: hidden;*/
+  width: 20%;
+  max-width: 300px;
   margin-left: auto;
   margin-right: auto;
 }

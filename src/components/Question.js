@@ -99,25 +99,18 @@ function Question(props) {
                                 //Boolean type
                                 <div className="question-response">
                                     <div className="radio-wrapper">
-                                        <div style={{display: 'flex'}}>
-                                            <p>true</p>
-                                            <input
-                                                type="radio"
-                                                name={nanoId}
-                                                value="true"
-                                                checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.boolean ? currResponse[0].response.boolean : null}
-                                            />
-                                        </div>
-                                        <div style={{display: 'flex' , marginTop: '10px', marginBottom: '10px'}}>
-                                            <p>false</p>
-                                            <input
-                                                style={{margin: "0", padding: '0'}}
-                                                type="radio"
-                                                name={nanoId}
-                                                value="false"
-                                                checked={currResponse !== undefined && currResponse.length !== 0 && !currResponse[0].response.boolean ? !currResponse[0].response.boolean : null}
-                                            />
-                                        </div>
+                                        <label><input
+                                            type="radio"
+                                            name={nanoId}
+                                            value="true"
+                                            checked={currResponse !== undefined && currResponse.length !== 0 && currResponse[0].response.boolean ? currResponse[0].response.boolean : null}
+                                        />true</label>
+                                        <label><input
+                                            type="radio"
+                                            name={nanoId}
+                                            value="false"
+                                            checked={currResponse !== undefined && currResponse.length !== 0 && !currResponse[0].response.boolean ? !currResponse[0].response.boolean : null}
+                                        />false</label>
                                     </div>
                                 </div>
                                 :

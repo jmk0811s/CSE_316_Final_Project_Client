@@ -75,6 +75,9 @@ function Main(props) {
                     <img src= {imgURL? imgURL:'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg'} style={{width: '40px', borderRadius: '50%'}}/>
                 </button>
 
+                <button onClick={deleteResponses}>
+                    Delete Response Test Button
+                </button>
 
             </div>
             {

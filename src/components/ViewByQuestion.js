@@ -270,13 +270,79 @@ function ViewByQuestion(props){
     // console.log(currBooleanResponses)
     //console.log(currBooleanResponses[0])
 
+    const downloadFile = ({ data, fileName, fileType }) => {
+        // Create a blob with the data we want to download as a file
+        const blob = new Blob([data], { type: fileType })
+        // Create an anchor element and dispatch a click event on it
+        // to trigger a download
+        const a = document.createElement('a')
+        a.download = fileName
+        a.href = window.URL.createObjectURL(blob)
+        const clickEvt = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+        })
+        a.dispatchEvent(clickEvt)
+        a.remove()
+    }
+
+    const exportResponseToJson = e => {
+        e.preventDefault()
+        downloadFile({
+            data: JSON.stringify(props.responses),
+            fileName: 'responses.json',
+            fileType: 'text/json',
+        })
+    }
+    const exportQuestionToJson = e => {
+        e.preventDefault()
+        downloadFile({
+            data: JSON.stringify(props.questions),
+            fileName: 'questions.json',
+            fileType: 'text/json',
+        })
+    }
+    const exportQuestionsToCsv = e => {
+        e.preventDefault()
+
+        let headers = ['Type,Header,Choice,Mdate']
+
+        let questionsCsv = props.responses.reduce((acc, q) => {
+            const { type, header, choices,_id, mdate, nanoid, creator, v } = q
+            acc.push([ type, header, choices, mdate].join(','))
+            return acc
+        }, [])
+
+        downloadFile({
+            data: [...headers, ...questionsCsv].join('\n'),
+            fileName: 'questions.csv',
+            fileType: 'text/csv',
+        })
+    }
+    const exportResponsesToCsv = e => {
+        e.preventDefault()
+
+        let headers = ['Response,date,question,creator']
+
+        let responsesCsv = props.responses.reduce((acc, r) => {
+            const { resp, _id, date, nanoid, question, creator } = r
+            acc.push([ resp, date, question, creator].join(','))
+            return acc
+        }, [])
+
+        downloadFile({
+            data: [...headers, ...responsesCsv].join('\n'),
+            fileName: 'responses.csv',
+            fileType: 'text/csv',
+        })
+    }
 
 
 
 
     return (
       <div className="ViewByQuestion">
-          <h1>View by Question</h1>
 
           {/*text questions*/}
           <div className="ViewDataH1">
@@ -408,10 +474,20 @@ function ViewByQuestion(props){
               </div>
           </div>
 
-
-
-
-
+          <div className={"downloads"}>
+              <button type='button' onClick={exportResponseToJson}>
+                  Export Responses to JSON
+              </button>
+              <button type='button' onClick={exportQuestionToJson}>
+                  Export Questions to JSON
+              </button>
+              <button type='button' onClick={exportResponsesToCsv}>
+                  Export Responses to CSV
+              </button>
+              <button type='button' onClick={exportQuestionsToCsv}>
+                  Export Questions to CSV
+              </button>
+          </div>
 
       </div>
     );

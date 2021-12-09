@@ -231,7 +231,6 @@ button:hover {
   box-sizing: border-box;
   border-radius: 5px;
   border: 1px solid darkgray;
-  visibility: ;
 }
 
 .Question {
@@ -245,8 +244,6 @@ button:hover {
   display: flex;
   flex-direction: column;
 }
-
-
 .radio-input{
   outline: 0;
   border-bottom: 2px solid #03a8f45e;
@@ -278,7 +275,36 @@ button:hover {
   margin-left: auto;
   margin-right: auto;
 }
+.downloads{
+  width: 20%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.downloads button{
+  background-color: transparent;
+  margin-bottom: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  /*border-top: hidden;*/
+  /*border-right: hidden;*/
+  /*border-left: hidden;*/
+}
+.modeSelect button{
+  background-color: var(--actionBackgroundColor);
+  border-radius: 15px;
+  height: 60px;
+  border: none;
+  color: #eaf6f6;
+}
 
+.modeSelect{
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+
+.radio-wrapper
 @media all and (max-width: 600px) {
   .Header{
     display: none;

@@ -21,31 +21,35 @@ function SignUp(props) {
 
     const testRegister = (e) => {
         e.preventDefault();
-        if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)) { // email validation
-            const user1 = {
-                "name" : name,
-                "email" : email,
-                "password" : pw,
-                "address1" : addr1,
-                "address2" : addr2,
-                "profile_url" : profileUrl
+        if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/.test(pw)) { //password validation
+            if (/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(email)) { //email validation
+                const user1 = {
+                    "name" : name,
+                    "email" : email,
+                    "password" : pw,
+                    "address1" : addr1,
+                    "address2" : addr2,
+                    "profile_url" : profileUrl
+                }
+                registerUserAPIMethod(user1).then(ret => {
+                    console.log(ret);
+                    if(ret){
+                        props.setShowSignup(false);
+                        props.setLogin(true);
+                    }
+                    else{
+                        setError("Invalid information. Properly fill out the information");
+                    }
+                });
             }
-            registerUserAPIMethod(user1).then(ret => {
-                console.log(ret);
-                if(ret){
-                    props.setShowSignup(false);
-                    props.setLogin(true);
-                }
-                else{
-                    setError("Invalid information. Properly fill out the information");
-                }
-            });
+            else {
+                setError("Invalid email format");
+            }
         }
         else {
-            setError("Invalid email format");
+            setError("Invalid password format");
         }
     }
-
 
     let handleChange = (prop) => (event) => {
         if (prop === "name"){
@@ -110,7 +114,7 @@ function SignUp(props) {
                        onChange={handleChange("email")}></input>
 
                 <p style={{margin: 0}}>Password</p>
-                <input type="text"
+                <input type="password"
                        id="iPw"
                        name="pw"
                        value = {pw}

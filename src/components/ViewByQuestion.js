@@ -342,7 +342,6 @@ function ViewByQuestion(props){
 
     return (
       <div className="ViewByQuestion">
-          <h1>View by Question</h1>
 
           {/*text questions*/}
           <div className="ViewDataH1">

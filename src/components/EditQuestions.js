@@ -128,7 +128,7 @@ function EditQuestions(props){
 
     return (
         <div className="EditQuestions">
-            <div style={{width: "80%",margin: "auto",display: "flex", justifyContent: "space-between"}}>
+            <div style={{width: "600px",margin: "auto",display: "flex", justifyContent: "space-between"}}>
                 <h3>Edit Questions</h3>
                 <button onClick={addQuestion} style={{background: "transparent", border: "none"}}>
                     <span  className="material-icons">add_circle_outline</span>

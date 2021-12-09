@@ -18,6 +18,15 @@ function ViewByDate(props) {
         setDate(date);
     }, [props, date]);
 
+    useEffect(() => {
+        if (responses !== undefined) {
+            console.log(responses.filter((res) => dateToString(new Date(res.date)) === dateToString(new Date(date))));
+            if (responses.filter((res) => dateToString(new Date(res.date)) === dateToString(new Date(date))).length === 0) {
+                console.log(true);
+            }
+        }
+    }, [date]);
+
     const dateToString = (date) => {
         return date.getFullYear() + " / " + (date.getMonth() + 1) + " / " + date.getDate();
     }

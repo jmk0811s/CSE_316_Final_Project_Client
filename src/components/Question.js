@@ -52,7 +52,7 @@ function Question(props) {
 
     const updateChoice = (e, i) => {
         let newChoices = [];
-        console.log("old cho");
+        //console.log("old choices");
         console.log(choices);
         for (let j = 0; j < 3; j++) {
             if (i === j) {
@@ -62,7 +62,7 @@ function Question(props) {
                 newChoices.push(choices[j]);
             }
         }
-        console.log("new cho");
+        //console.log("new choices");
         console.log(newChoices);
         props.updateQuestion(newChoices, 'multiple_choice', index);
     }
@@ -190,7 +190,12 @@ function Question(props) {
                 :
                 // Answer mode
                 <div className="Question">
-                    <h3 style={{margin:0}}>{header}</h3>
+                    {
+                        header ?
+                            <h3 style={{margin:0}}>{header}</h3>
+                            :
+                            <h3 style={{margin:0}}>No Title</h3>
+                    }
                     {
                         type == "Text" ?
                             //Text type
@@ -219,7 +224,7 @@ function Question(props) {
                                 :
                                 type == "Boolean" ?
                                     //Boolean type
-                                    <div className="question-response">
+                                    <div className="question-response2">
                                         <div className="radio-wrapper">
                                             <label><input
                                                 type="radio"

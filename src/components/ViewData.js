@@ -32,12 +32,14 @@ function ViewData(){
 
     return(
         <div>
-            <button onClick={() => setShowViewByDate(false)}>
-                <h2>ViewByQuestion</h2>
-            </button>
-            <button onClick={() => setShowViewByDate(true)}>
-                <h2>ViewByDate</h2>
-            </button>
+            <div className={'viewMode'} style={{marginBottom:"60px"}}>
+                <button onClick={() => setShowViewByDate(false)}>
+                    <h3>ViewByQuestion</h3>
+                </button>
+                <button onClick={() => setShowViewByDate(true)}>
+                    <h3>ViewByDate</h3>
+                </button>
+            </div>
             {
                 showViewByDate ?
                     <div>

@@ -50,13 +50,15 @@ button:hover {
 }
 
 
-.Question{
+.Question {
   background-color: var(--standardBackgroundColor);
-  padding: 10px;
+  padding: 15px;
   border-radius: 10px;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+  margin-bottom: 10px;
+  max-width: 600px;
 }
 
 .Question input, select{
@@ -236,15 +238,11 @@ button:hover {
   border-radius: 5px;
   border: 1px solid darkgray;
 }
-
-.Question {
-  padding: 15px;
-}
 .Question div{
   margin-bottom: 10px;
 
 }
-.radio-wrapper1{
+.radio-wrapper1, .radio-wrapper {
   display: flex;
   flex-direction: column;
 }
@@ -297,6 +295,38 @@ button:hover {
   /*border-left: hidden;*/
 }
 
+.viewMode{
+  width: 80%;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.viewMode button{
+  background-color: var(--activeColor);
+  padding-left: 30px;
+  padding-right: 30px;
+  height: 50px;
+  border: none;
+  border-radius: 15px;
+  color: var(--actionTextColor);
+
+}
+
+.downloads button {
+  background-color: var(--activeColor);
+  margin-bottom: 20px;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 50px;
+  border: none;
+  border-radius: 20px;
+  color: var(--actionTextColor);
+}
+
 @media all and (max-width: 600px) {
   .Header{
     display: none;
@@ -311,5 +341,6 @@ button:hover {
   }
   .Question{
     width: 100%;
+    max-width: 600px;
   }
 }

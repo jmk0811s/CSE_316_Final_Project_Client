@@ -15,8 +15,8 @@ pw: Test1234
 # URLs
 Client:   https://github.com/jmk0811s/CSE_316_Final_Project_Client
 Server:   https://github.com/jmk0811s/CSE_316_Final_Project_Server
-Netlify:  https://61b1b5fdf4b88600081e4278--optimistic-torvalds-7323fb.netlify.app/
-Heroku:   https://cse-316-final-project.herokuapp.com/
+Netlify (currently disabled):  https://61b1b5fdf4b88600081e4278--optimistic-torvalds-7323fb.netlify.app/
+Heroku (currently disabled):   https://cse-316-final-project.herokuapp.com/
 
 
 
